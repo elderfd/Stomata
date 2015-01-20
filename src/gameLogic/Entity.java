@@ -17,5 +17,13 @@ public abstract class Entity implements DrawableObject {
         this.currentLocation = startLocation;
     }
 
+    public void setLocation(Location newLocation) {
+        currentLocation = newLocation;
+    }
+    
+    public Location getLocation() {
+        return currentLocation;
+    }
+    
     protected Location currentLocation;
 }

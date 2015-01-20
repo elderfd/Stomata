@@ -27,6 +27,10 @@ public class Pathogen extends Entity {
         return spriteID;
     }
 
+    public Location getTargetLocation() {
+        return targetLocation;
+    }
+    
     // The target the pathogen is heading for
     private Location targetLocation;
     private String spriteID = "pathogen"; // TODO: Bring in an image for this

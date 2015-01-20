@@ -14,5 +14,5 @@ import java.util.ArrayList;
 public interface Area {
     boolean containsLocation(Location location);
     Location getRandomLocationInArea(RNG rng);
-    ArrayList<Location> getUniqueListOfRandomLocation(int numberOfLocations, RNG rng);
+    ArrayList<Location> getUniqueListOfRandomLocations(int numberOfLocations, RNG rng);
 }

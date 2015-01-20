@@ -27,7 +27,7 @@ public class RectangularArea implements Area {
     }
     
     @Override
-    public ArrayList<Location> getUniqueListOfRandomLocation(int numberOfLocations, RNG rng) {
+    public ArrayList<Location> getUniqueListOfRandomLocations(int numberOfLocations, RNG rng) {
         ArrayList<Location> returnList = new ArrayList();
         ArrayList<Location> locationsStillAvailable = new ArrayList<>();
         
