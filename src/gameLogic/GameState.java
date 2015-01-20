@@ -24,60 +24,6 @@ public class GameState {
         populateRandomStomata();
     }
     
-    // Represents any temporary entity in the game
-    abstract private class Entity implements DrawableObject {
-        public Entity(Location startLocation) {
-            this.currentLocation = startLocation;
-        }
-        
-        protected Location currentLocation;
-    }
-    
-    private class Pathogen extends Entity {
-        public Pathogen(Location startLocation, Stoma target) {
-            super(startLocation);
-            this.targetLocation = target.getLocation();
-        }
-        
-        @Override
-        public Location getLocation() {
-            return currentLocation;
-        }
-        
-        @Override
-        public String getSpriteID() {
-            return spriteID;
-        }
-        
-        // The target the pathogen is heading for
-        private Location targetLocation;
-        private String spriteID = "pathogen"; // TODO: Bring in an image for this
-    }
-    
-    private class Stoma implements DrawableObject {
-        public Stoma(Location location) {
-            this.location = location;
-        }
-        
-        @Override
-        public Location getLocation() {
-            return location;
-        }
-        
-        @Override
-        public String getSpriteID() {
-            return spriteID;
-        }
-        
-        // Whether or not the stoma is currently open
-        private boolean open = false;
-        
-        // Where the stoma is located in space
-        private Location location;
-        
-        private String spriteID = "stoma";
-    }
-    
     // This returns a list of everything to draw to rendering window
     public ArrayList<DrawableObject> getAllDrawableObjects() {
         ArrayList<DrawableObject> returnList = new ArrayList<>();
@@ -127,7 +73,7 @@ public class GameState {
     private RNG rng;
     
     // Some constants to change later
-    static final int ARENA_NUM_COLS = 5;
-    static final int ARENA_NUM_ROWS = 5;
-    static final int NUM_STOMATA = 5;
+    static final private int ARENA_NUM_COLS = 5;
+    static final private int ARENA_NUM_ROWS = 5;
+    static final private int NUM_STOMATA = 5;
 }
