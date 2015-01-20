@@ -6,9 +6,12 @@
 package gui;
 
 import gameLogic.GameState;
+import gameLogic.GameWorker;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -17,19 +20,21 @@ import javax.swing.JPanel;
  * @author James
  */
 public class GamePanel extends JPanel {
-    public GamePanel() {
+    public GamePanel(GameState state) {
         spriteManager = new SpriteManager();
         everythingToDraw = new ArrayList<DrawableObject>();
-        state = new GameState();
-        update(state);
+        this.state = state;
+        update();
     }
     
-    public void update (GameState state) {
+    public void update () {
         everythingToDraw = state.getAllDrawableObjects();
+        repaint();
     }
     
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
         
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -69,9 +74,14 @@ public class GamePanel extends JPanel {
         }
     }
     
+    // Sets the game running
+    public void run() {
+        GameWorker workThread = new GameWorker(state, this);
+        
+        workThread.execute();
+    }
+    
     private SpriteManager spriteManager;
     private ArrayList<DrawableObject> everythingToDraw;
-    
-    // TODO: This will live elsewhere later, just here for test
     GameState state;
 }

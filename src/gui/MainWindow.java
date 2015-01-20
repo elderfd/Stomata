@@ -5,7 +5,10 @@
  */
 package gui;
 
+import gameLogic.GameState;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -14,12 +17,17 @@ import javax.swing.JFrame;
 public class MainWindow{
     public MainWindow() {
         initGUI();
+           
+        renderPanel.run();
     }
     
     private void initGUI() {
         window = new JFrame();
         
-        renderPanel = new GamePanel();
+        // TODO: This will live elsewhere later, just here for test
+        GameState state = new GameState();
+        
+        renderPanel = new GamePanel(state);
         window.add(renderPanel);
         
         window.setSize(256, 256);

@@ -10,9 +10,9 @@ public class Location {
     }
 
     // Produces a random location within limits
-    public Location(Location lowerLeft, int height, int width, RNG rng) {
-        this.x = lowerLeft.getX() + rng.uniformIntInRange(0, width);
-        this.y = lowerLeft.getY() + rng.uniformIntInRange(0, height);
+    public Location(Location upperLeft, int height, int width, RNG rng) {
+        this.x = upperLeft.getX() + rng.uniformIntInRange(0, width);
+        this.y = upperLeft.getY() + rng.uniformIntInRange(0, height);
     }
     
     public int getX() {

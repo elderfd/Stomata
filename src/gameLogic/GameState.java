@@ -23,7 +23,7 @@ public class GameState {
         
         populateRandomStomata();
     }
-    
+        
     // This returns a list of everything to draw to rendering window
     public ArrayList<DrawableObject> getAllDrawableObjects() {
         ArrayList<DrawableObject> returnList = new ArrayList<>();
@@ -34,7 +34,24 @@ public class GameState {
             returnList.add(stoma);
         }
         
+        // Return entities second so they draw over the top
+        for(Entity entity : entities) {
+            returnList.add(entity);
+        }
+        
         return returnList;
+    }
+    
+    public void updateGameState () {
+        // TODO: Put something meaninful in here rather than this test code
+        entities.add(new Pathogen(
+                new Location(new Location(0,0),
+                    ARENA_NUM_ROWS,
+                    ARENA_NUM_COLS,
+                    rng
+                ),
+            stomata.get(0))
+        );
     }
     
     // Populates the arena randomly with stomata
