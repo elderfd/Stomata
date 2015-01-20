@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphicstest;
+package gameLogic;
 
+import gui.DrawableObject;
+import utility.Location;
+import utility.RNG;
 import java.util.ArrayList;
 
 /**
@@ -36,10 +39,12 @@ public class GameState {
             this.targetLocation = target.getLocation();
         }
         
+        @Override
         public Location getLocation() {
             return currentLocation;
         }
         
+        @Override
         public String getSpriteID() {
             return spriteID;
         }
@@ -54,10 +59,12 @@ public class GameState {
             this.location = location;
         }
         
+        @Override
         public Location getLocation() {
             return location;
         }
         
+        @Override
         public String getSpriteID() {
             return spriteID;
         }
@@ -72,7 +79,7 @@ public class GameState {
     }
     
     // This returns a list of everything to draw to rendering window
-    ArrayList<DrawableObject> getAllDrawableObjects() {
+    public ArrayList<DrawableObject> getAllDrawableObjects() {
         ArrayList<DrawableObject> returnList = new ArrayList<>();
         
         // TODO: Add all the other things to draw

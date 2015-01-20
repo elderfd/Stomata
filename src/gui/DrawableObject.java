@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphicstest;
+package gui;
 
-import java.util.Random;
+import utility.Location;
 
 /**
  *
  * @author James
  */
-public class RNG extends Random {
-    public int uniformIntInRange(int min, int max) {
-        int rNum = nextInt(max-min);
-        
-        return rNum + min;
-    }
+public interface DrawableObject {
+    public Location getLocation();
+    public String getSpriteID();
 }

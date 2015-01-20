@@ -1,4 +1,6 @@
-package graphicstest;
+package utility;
+
+import utility.RNG;
 
 public class Location {
     // Produces location at set location

@@ -3,20 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphicstest;
+package utility;
+
+import java.util.Random;
 
 /**
  *
  * @author James
  */
-public class GraphicsTest {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        MainWindow window = new MainWindow();
-
+public class RNG extends Random {
+    public int uniformIntInRange(int min, int max) {
+        int rNum = nextInt(max-min);
+        
+        return rNum + min;
     }
-    
 }
