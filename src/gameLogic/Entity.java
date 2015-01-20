@@ -21,9 +21,13 @@ public abstract class Entity implements DrawableObject {
         currentLocation = newLocation;
     }
     
+    @Override
     public Location getLocation() {
         return currentLocation;
     }
+    
+    // Updates location to match that at t + 1
+    abstract public void updateLocation();
     
     protected Location currentLocation;
 }

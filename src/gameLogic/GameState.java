@@ -26,12 +26,12 @@ public class GameState {
         // Stomata area is currently bottom half and pathogens top half
         stomataArea = new RectangularArea(new Location(0, (int)(ARENA_NUM_COLS / 2)),
                 ARENA_NUM_COLS,
-                (int)(ARENA_NUM_ROWS / 2)
+                (int)(ARENA_NUM_ROWS / 2 - 1)
         );
         
         pathogenSpawnArea = new RectangularArea(new Location(0, 0),
                 ARENA_NUM_COLS,
-                (int)(ARENA_NUM_ROWS / 2)
+                (int)(ARENA_NUM_ROWS / 2 - 1)
         );
         
         populateRandomStomata();
@@ -62,44 +62,16 @@ public class GameState {
         
         // Move existing pathogens
         for(Entity entity : entities) {
-            // Currently ok to do this cast as all entities pathogens, not true in future!
-            Pathogen pathogen = (Pathogen)(entity);
-            
-            // Move pathogen one square closer to target
-            Location target = pathogen.getTargetLocation();
-            Location current = pathogen.getLocation();
-            
-            // TODO: Make moving better
-            
-            // Check it hasn't already reached its target
-            if(!target.equals(current)) {
-                int newX = current.getX(), newY = current.getY();
-                
-                int xDiff = target.getX() - current.getX();
-                int yDiff = target.getY() - current.getY();
-                
-                if(xDiff > 0) {
-                    newX++;
-                } else if(xDiff < 0) {
-                    newX--;
-                }
-                
-                if(yDiff > 0) {
-                    newY++;
-                } else if(yDiff < 0) {
-                    newY--;
-                }
-                
-                pathogen.setLocation(new Location(newX, newY));
-            }
+            entity.updateLocation();
         }
         
         // Add new pathogens if we need to
         for(int i = 0; i < PATHOGEN_SPAWN_EVENT_ATTEMPTS; i++) {
             if(rng.bernoulliTrial(PATHOGEN_SPAWN_PROBABILITY)) {
                 entities.add(new Pathogen(
-                pathogenSpawnArea.getRandomLocationInArea(rng),
-            stomata.get(rng.uniformIntInRange(0, stomata.size())))
+                    pathogenSpawnArea.getRandomLocationInArea(rng),
+                    stomata.get(rng.uniformIntInRange(0, stomata.size()))
+                )
         );
             }
         }

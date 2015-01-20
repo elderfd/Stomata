@@ -15,6 +15,14 @@ public class Location {
         this.y = upperLeft.getY() + rng.uniformIntInRange(0, height);
     }
     
+    public void setX(int newValue) {
+        x = newValue;
+    }
+    
+    public void setY(int newValue) {
+        y = newValue;
+    }
+    
     public boolean equals(Location other) {
         return x == other.x && y == other.y;
     }
