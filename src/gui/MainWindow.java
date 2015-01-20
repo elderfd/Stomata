@@ -30,7 +30,7 @@ public class MainWindow{
         renderPanel = new GamePanel(state);
         window.add(renderPanel);
         
-        window.setSize(256, 256);
+        window.setSize(1000, 750);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         window.setTitle("Test");

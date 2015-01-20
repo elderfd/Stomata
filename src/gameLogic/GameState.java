@@ -9,6 +9,7 @@ import gui.DrawableObject;
 import utility.Location;
 import utility.RNG;
 import java.util.ArrayList;
+import utility.RectangularArea;
 
 /**
  * This class holds the state of a game at time t. Can be interrogated to get
@@ -20,6 +21,18 @@ public class GameState {
         stomata = new ArrayList<>();
         entities = new ArrayList<>();
         rng = new RNG();
+        
+        // Set up key areas in game arena
+        // Stomata area is currently bottom half and pathogens top half
+        stomataArea = new RectangularArea(new Location(0, (int)(ARENA_NUM_COLS / 2)),
+                ARENA_NUM_COLS,
+                (int)(ARENA_NUM_ROWS / 2)
+        );
+        
+        pathogenSpawnArea = new RectangularArea(new Location(0, 0),
+                ARENA_NUM_COLS,
+                (int)(ARENA_NUM_ROWS / 2)
+        );
         
         populateRandomStomata();
     }
@@ -43,35 +56,27 @@ public class GameState {
     }
     
     public void updateGameState () {
-        // TODO: Put something meaninful in here rather than this test code
-        entities.add(new Pathogen(
-                new Location(new Location(0,0),
-                    ARENA_NUM_ROWS,
-                    ARENA_NUM_COLS,
-                    rng
-                ),
+        // TODO: Better game logic
+        
+        for(int i = 0; i < PATHOGEN_SPAWN_EVENT_ATTEMPTS; i++) {
+            if(rng.bernoulliTrial(PATHOGEN_SPAWN_PROBABILITY)) {
+                entities.add(new Pathogen(
+                pathogenSpawnArea.getRandomLocationInArea(rng),
             stomata.get(0))
         );
+            }
+        }
+        
     }
     
     // Populates the arena randomly with stomata
     private void populateRandomStomata() {
         stomata.clear();
         
-        Location topLeftOfArena = new Location(0, 0);
-        ArrayList<Location> locationsStillAvailable = new ArrayList<>();
+        ArrayList<Location> randomLocations = stomataArea.getUniqueListOfRandomLocation(NUM_STOMATA, rng);
         
-        for(int x = 0; x < ARENA_NUM_COLS; x++) {
-            for(int y = 0; y < ARENA_NUM_ROWS; y++) {
-                locationsStillAvailable.add(new Location(x, y));
-            }
-        }
-        
-        for(int i = 0; i < NUM_STOMATA && locationsStillAvailable.size() > 0; i++) {
-            int randomIndex = rng.uniformIntInRange(0, locationsStillAvailable.size());
-            
-            stomata.add(new Stoma(locationsStillAvailable.get(randomIndex)));
-            locationsStillAvailable.remove(randomIndex);
+        for(Location location : randomLocations) {
+            stomata.add(new Stoma(location));
         }
     }
     
@@ -83,14 +88,18 @@ public class GameState {
         return ARENA_NUM_ROWS;
     }
     
-    private int time = 0;
     private ArrayList<Stoma> stomata;
     private ArrayList<Entity> entities;
     
     private RNG rng;
     
     // Some constants to change later
-    static final private int ARENA_NUM_COLS = 5;
-    static final private int ARENA_NUM_ROWS = 5;
+    static final private int ARENA_NUM_COLS = 10;
+    static final private int ARENA_NUM_ROWS = 8;
     static final private int NUM_STOMATA = 5;
+    static final private double PATHOGEN_SPAWN_PROBABILITY = 0.5;
+    static final private int PATHOGEN_SPAWN_EVENT_ATTEMPTS = 3;
+    
+    final private RectangularArea stomataArea;
+    final private RectangularArea pathogenSpawnArea;
 }

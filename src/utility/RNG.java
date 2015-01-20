@@ -13,8 +13,12 @@ import java.util.Random;
  */
 public class RNG extends Random {
     public int uniformIntInRange(int min, int max) {
-        int rNum = nextInt(max-min);
+        int rNum = nextInt(max - min);
         
         return rNum + min;
+    }
+    
+    public boolean bernoulliTrial(double probabilityOfSuccess) {
+        return (nextDouble() < probabilityOfSuccess);
     }
 }
