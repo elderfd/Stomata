@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphicstest;
+package utility;
 
 import java.util.Random;
 
@@ -13,8 +13,12 @@ import java.util.Random;
  */
 public class RNG extends Random {
     public int uniformIntInRange(int min, int max) {
-        int rNum = nextInt(max-min);
+        int rNum = nextInt(max - min);
         
         return rNum + min;
+    }
+    
+    public boolean bernoulliTrial(double probabilityOfSuccess) {
+        return (nextDouble() < probabilityOfSuccess);
     }
 }

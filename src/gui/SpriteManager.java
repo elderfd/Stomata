@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphicstest;
+package gui;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -23,10 +23,14 @@ public class SpriteManager {
     
     private void loadStandardSprites() {
         List<String> spriteIDs = Arrays.asList(
-            "stoma"
+            "stoma",
+            "background",
+            "pathogen"
         );
         List<String> fileNames = Arrays.asList(
-            "stoma.jpg"
+            "stoma.jpg",
+            "background.jpg",
+            "pathogen.jpg"
         );
         
         String imageFolderName = "images/";
