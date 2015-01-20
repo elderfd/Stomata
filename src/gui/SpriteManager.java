@@ -23,10 +23,12 @@ public class SpriteManager {
     
     private void loadStandardSprites() {
         List<String> spriteIDs = Arrays.asList(
-            "stoma"
+            "stoma",
+            "background"
         );
         List<String> fileNames = Arrays.asList(
-            "stoma.jpg"
+            "stoma.jpg",
+            "background.jpg"
         );
         
         String imageFolderName = "images/";

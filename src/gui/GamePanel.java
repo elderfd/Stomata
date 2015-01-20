@@ -48,6 +48,15 @@ public class GamePanel extends JPanel {
         int widthOfCell = screenWidth / arenaWidth;
         int heightOfCell = screenHeight / arenaHeight;
         
+        // Draw the background
+        g2d.drawImage(spriteManager.getSpriteImage("background"),
+            0,
+            0,
+            screenWidth,
+            screenHeight,
+            this
+        );
+        
         // Then draw out all of the objects
         for(DrawableObject object : everythingToDraw) {
             g2d.drawImage(spriteManager.getSpriteImage(object.getSpriteID()),
