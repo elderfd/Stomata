@@ -32,6 +32,10 @@ public class Pathogen extends Entity {
         return targetLocation;
     }
     
+    public boolean hasHitTarget() {
+        return targetLocation.equals(currentLocation);
+    }
+    
     public void updateLocation() {
         // Move pathogen one square closer to target
 

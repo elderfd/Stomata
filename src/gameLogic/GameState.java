@@ -55,6 +55,29 @@ public class GameState {
         return returnList;
     }
     
+    // Returns whether anything changed
+    public boolean toggleAnyStomataAtLocation(Location location) {
+        // Check if any stomata are desired location, and toggle if so
+        Stoma foundStoma = getStomaAtLocation(location);
+        
+        if(foundStoma != null) {
+            foundStoma.toggle();
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public Stoma getStomaAtLocation(Location location) {
+        for(Stoma stoma : stomata) {
+            if(stoma.getLocation().equals(location)) {
+                return stoma;
+            }
+        }
+        
+        return null;
+    }
+    
     public void updateGameState () {
         // TODO: Better game logic
         
@@ -76,6 +99,7 @@ public class GameState {
             }
         }
         
+        updatePoints();
     }
     
     // Populates the arena randomly with stomata
@@ -87,6 +111,35 @@ public class GameState {
         for(Location location : randomLocations) {
             stomata.add(new Stoma(location));
         }
+    }
+    
+    public void updatePoints() {
+        // Add some points for all open stomata
+        int pointsPerOpenStoma = 10;
+        
+        for(Stoma stoma : stomata) {
+            if(stoma.isOpen()) points += pointsPerOpenStoma;
+        }
+        
+        // Remove points (and pathogens!) for any hits on target when stomata is open
+        // TODO: Generalise this away from entities
+        int pointCostPerPathogen = 20;
+        
+        for(Entity entity : entities) {
+            Pathogen pathogen = (Pathogen)(entity);
+            
+            if(pathogen.hasHitTarget()) {
+                if(getStomaAtLocation(pathogen.getLocation()) != null) {
+                    points -= pointCostPerPathogen;
+                }
+                
+                entities.remove(entity);
+            } 
+        }
+    }
+    
+    public int getPoints() {
+        return points;
     }
     
     public int getWidthOfArena() {
@@ -111,4 +164,7 @@ public class GameState {
     
     final private RectangularArea stomataArea;
     final private RectangularArea pathogenSpawnArea;
+    
+    // The number of points the player has earned
+    int points = 0;
 }

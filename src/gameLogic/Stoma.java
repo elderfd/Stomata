@@ -24,14 +24,27 @@ public class Stoma implements DrawableObject {
 
     @Override
     public String getSpriteID() {
-        return spriteID;
+        if(open) {
+            return openSpriteID;
+        } else {
+            return closedSpriteID;
+        }
+    }
+    
+    public void toggle() {
+        open = !open;
     }
 
+    public boolean isOpen() {
+        return open;
+    }
+    
     // Whether or not the stoma is currently open
     private boolean open = false;
 
     // Where the stoma is located in space
     private Location location;
 
-    private String spriteID = "stoma";
+    private String openSpriteID = "stomaOpen";
+    private String closedSpriteID = "stomaClosed";
 }
