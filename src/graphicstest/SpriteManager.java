@@ -17,6 +17,7 @@ import java.util.HashMap;
  */
 public class SpriteManager {
     public SpriteManager() {
+        nameToSpriteMap = new HashMap<>();
         loadStandardSprites();
     }
     
@@ -28,14 +29,16 @@ public class SpriteManager {
             "stoma.jpg"
         );
         
+        String imageFolderName = "images/";
+        
         for(int i = 0; i < spriteIDs.size(); i++) {
             Sprite newSprite = new Sprite();
             
             try {
-                newSprite.loadFromFile(fileNames.get(i));
+                newSprite.loadFromFile(imageFolderName + fileNames.get(i));
             } catch(IOException e) {
                 try {
-                    newSprite.loadFromFile(placeholderFileName);
+                    newSprite.loadFromFile(imageFolderName + placeholderFileName);
                 } catch(IOException e2) {
                     // If here then all hell is breaking loose so just give up
                     return;
@@ -54,6 +57,7 @@ public class SpriteManager {
         } catch(Exception e) {
             // Should never happen
             // TODO: Better error handling here
+            
             System.exit(1);
         }
         

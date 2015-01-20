@@ -13,39 +13,21 @@ import java.util.ArrayList;
  * @author James
  */
 public class GameState {
-    
-    private class Location {
-        // Produces location at set location
-        public Location(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+    public GameState() {
+        stomata = new ArrayList<>();
+        entities = new ArrayList<>();
+        rng = new RNG();
         
-        // Produces a random location within limits
-        public Location(Location lowerLeft, int height, int width, RNG rng) {
-            this.x = lowerLeft.getX() + rng.uniformIntInRange(0, width);
-            this.y = lowerLeft.getY() + rng.uniformIntInRange(0, height);
-        }
-        
-        public int getX() {
-            return x;
-        }
-        
-        public int getY() {
-            return y;
-        }
-        
-        private int x;
-        private int y;
+        populateRandomStomata();
     }
     
     // Represents any temporary entity in the game
-    private class Entity {
+    abstract private class Entity implements DrawableObject {
         public Entity(Location startLocation) {
             this.currentLocation = startLocation;
         }
         
-        private Location currentLocation;
+        protected Location currentLocation;
     }
     
     private class Pathogen extends Entity {
@@ -54,17 +36,30 @@ public class GameState {
             this.targetLocation = target.getLocation();
         }
         
+        public Location getLocation() {
+            return currentLocation;
+        }
+        
+        public String getSpriteID() {
+            return spriteID;
+        }
+        
         // The target the pathogen is heading for
-        Location targetLocation;
+        private Location targetLocation;
+        private String spriteID = "pathogen"; // TODO: Bring in an image for this
     }
     
-    private class Stoma {
+    private class Stoma implements DrawableObject {
         public Stoma(Location location) {
             this.location = location;
         }
         
-        Location getLocation() {
+        public Location getLocation() {
             return location;
+        }
+        
+        public String getSpriteID() {
+            return spriteID;
         }
         
         // Whether or not the stoma is currently open
@@ -72,23 +67,41 @@ public class GameState {
         
         // Where the stoma is located in space
         private Location location;
+        
+        private String spriteID = "stoma";
+    }
+    
+    // This returns a list of everything to draw to rendering window
+    ArrayList<DrawableObject> getAllDrawableObjects() {
+        ArrayList<DrawableObject> returnList = new ArrayList<>();
+        
+        // TODO: Add all the other things to draw
+        
+        for(Stoma stoma : stomata) {
+            returnList.add(stoma);
+        }
+        
+        return returnList;
     }
     
     // Populates the arena randomly with stomata
     private void populateRandomStomata() {
         stomata.clear();
         
-        Location lowerLeftOfArena = new Location(0, 0);
+        Location topLeftOfArena = new Location(0, 0);
+        ArrayList<Location> locationsStillAvailable = new ArrayList<>();
         
-        for(int i = 0; i < NUM_STOMATA; i++) {
-            Location randomLocation = new Location (
-                lowerLeftOfArena,
-                ARENA_NUM_ROWS,
-                ARENA_NUM_COLS,
-                rng
-            );
+        for(int x = 0; x < ARENA_NUM_COLS; x++) {
+            for(int y = 0; y < ARENA_NUM_ROWS; y++) {
+                locationsStillAvailable.add(new Location(x, y));
+            }
+        }
+        
+        for(int i = 0; i < NUM_STOMATA && locationsStillAvailable.size() > 0; i++) {
+            int randomIndex = rng.uniformIntInRange(0, locationsStillAvailable.size());
             
-            stomata.add(new Stoma(randomLocation));
+            stomata.add(new Stoma(locationsStillAvailable.get(randomIndex)));
+            locationsStillAvailable.remove(randomIndex);
         }
     }
     
@@ -107,7 +120,7 @@ public class GameState {
     private RNG rng;
     
     // Some constants to change later
-    static final int ARENA_NUM_COLS = 10;
-    static final int ARENA_NUM_ROWS = 10;
-    static final int NUM_STOMATA = 20;
+    static final int ARENA_NUM_COLS = 5;
+    static final int ARENA_NUM_ROWS = 5;
+    static final int NUM_STOMATA = 5;
 }
