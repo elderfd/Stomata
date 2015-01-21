@@ -125,17 +125,25 @@ public class GameState {
         // TODO: Generalise this away from entities
         int pointCostPerPathogen = 20;
         
+        ArrayList<Entity> entitiesToRemove = new ArrayList();
+        
         for(Entity entity : entities) {
             Pathogen pathogen = (Pathogen)(entity);
             
             if(pathogen.hasHitTarget()) {
-                if(getStomaAtLocation(pathogen.getLocation()) != null) {
+                Stoma stomaAtLocation = getStomaAtLocation(pathogen.getLocation());
+                
+                if(stomaAtLocation != null &&
+                    stomaAtLocation.isOpen()
+                ) {
                     points -= pointCostPerPathogen;
                 }
                 
-                entities.remove(entity);
+                entitiesToRemove.add(entity);
             } 
         }
+        
+        entities.removeAll(entitiesToRemove);
     }
     
     public int getPoints() {
