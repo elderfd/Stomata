@@ -6,6 +6,7 @@
 package gameLogic;
 
 import gui.GamePanel;
+import gui.MainWindow;
 import java.util.List;
 import javax.swing.SwingWorker;
 
@@ -14,9 +15,10 @@ import javax.swing.SwingWorker;
  * @author James
  */
 public class GameWorker extends SwingWorker<Void, Void> {
-    public GameWorker(GameState state, GamePanel gamePanel) {
+    public GameWorker(GameState state, GamePanel gamePanel, MainWindow mainWindow) {
         this.state = state;
         this.gamePanel = gamePanel;
+        this.mainWindow = mainWindow;
     }
     
     @Override
@@ -42,6 +44,10 @@ public class GameWorker extends SwingWorker<Void, Void> {
             if(gameStepCounter >= maxGameSteps) keepRunning = false;
         }
         
+        state.finished = true;
+        
+        publish();
+        
         return null;
     }
 
@@ -50,8 +56,9 @@ public class GameWorker extends SwingWorker<Void, Void> {
         gamePanel.update();
     }
     
-    final static double MIN_GAME_STEP_INTERVAL_IN_SECS = 1;
-    final static double MAX_GAME_TIME_IN_SECS = 10;
-    GameState state;
-    GamePanel gamePanel;
+    private final static double MIN_GAME_STEP_INTERVAL_IN_SECS = 1;
+    private final static double MAX_GAME_TIME_IN_SECS = 10;
+    private GameState state;
+    private GamePanel gamePanel;
+    private MainWindow mainWindow;
 }

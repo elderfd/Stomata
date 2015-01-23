@@ -6,6 +6,7 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+import static java.awt.event.KeyEvent.VK_ENTER;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -19,10 +20,11 @@ import utility.Location;
  * @author James
  */
 public class UserInputListener implements MouseListener, KeyListener {
-    public UserInputListener(GamePanel gamePanel) {
+    public UserInputListener(GamePanel gamePanel, MainWindow mainWindow) {
         leftMouseClickLocation = new Location(0, 0);
         rightMouseClickLocation = new Location(0, 0);
         this.gamePanel = gamePanel;
+        this.mainWindow = mainWindow;
     }
     
     @Override
@@ -88,4 +90,5 @@ public class UserInputListener implements MouseListener, KeyListener {
     Location rightMouseClickLocation;
     
     GamePanel gamePanel;
+    MainWindow mainWindow;
 }

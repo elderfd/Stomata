@@ -21,13 +21,14 @@ import utility.Location;
  * @author James
  */
 public class GamePanel extends JPanel {
-    public GamePanel(GameState state) {
+    public GamePanel(GameState state, MainWindow mainWindow) {
         spriteManager = new SpriteManager();
-        everythingToDraw = new ArrayList<DrawableObject>();
-        inputListener = new UserInputListener(this);
+        everythingToDraw = new ArrayList<>();
+        inputListener = new UserInputListener(this, mainWindow);
         addMouseListener(inputListener);
         addKeyListener(inputListener);
         
+        this.mainWindow = mainWindow;
         this.state = state;
         update();
     }
@@ -38,7 +39,7 @@ public class GamePanel extends JPanel {
     }
     
     public void exit() {
-        // TODO: Implement
+        mainWindow.showMainMenu();
     }
     
     public int getArenaHeight() {
@@ -99,13 +100,24 @@ public class GamePanel extends JPanel {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30)); 
         
         g2d.drawString(pointsLabel, pointsLabelX, pointsLabelY);
+        
+        // Game is finished then present a message saying so
+        if(state.finished) {
+            String finishedLabel = "Game finished. Press ESC to continue.";
+            int stringLength = (int)g2d.getFontMetrics().getStringBounds(finishedLabel, g2d).getWidth();
+            g2d.drawString(finishedLabel, (screenWidth - stringLength)/ 2, screenHeight / 2);
+        }
     }
     
     // Sets the game running
-    public void run() {
-        GameWorker workThread = new GameWorker(state, this);
+    public void run() {  
+        GameWorker workThread = new GameWorker(state, this, mainWindow);
         
         workThread.execute();
+    }
+    
+    public void resetGame() {
+        state.reset();
     }
     
     public void mouseClickedAt(Location clickLocation) {
@@ -114,6 +126,7 @@ public class GamePanel extends JPanel {
     
     private SpriteManager spriteManager;
     private ArrayList<DrawableObject> everythingToDraw;
-    GameState state;
-    UserInputListener inputListener;
+    private GameState state;
+    private UserInputListener inputListener;
+    private MainWindow mainWindow;
 }

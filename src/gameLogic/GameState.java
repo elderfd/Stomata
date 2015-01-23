@@ -55,6 +55,14 @@ public class GameState {
         return returnList;
     }
     
+    public void reset() {
+        entities.clear();
+        populateRandomStomata();
+        finished = false;
+        
+        points = 0;
+    }
+    
     // Returns whether anything changed
     public boolean toggleAnyStomataAtLocation(Location location) {
         // Check if any stomata are desired location, and toggle if so
@@ -174,5 +182,7 @@ public class GameState {
     final private RectangularArea pathogenSpawnArea;
     
     // The number of points the player has earned
-    int points = 0;
+    private int points = 0;
+    
+    public boolean finished;
 }
