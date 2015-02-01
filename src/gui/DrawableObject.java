@@ -5,6 +5,7 @@
  */
 package gui;
 
+import utility.Area;
 import utility.Location;
 
 /**
@@ -14,4 +15,5 @@ import utility.Location;
 public interface DrawableObject {
     public Location getLocation();
     public String getSpriteID();
+    public Area getHitBox();
 }

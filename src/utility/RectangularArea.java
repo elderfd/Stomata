@@ -55,6 +55,15 @@ public class RectangularArea implements Area {
                 location.getY() < upperLeft.getY() + height;
     }
     
+    // TODO: Would be good to implement overlap checking with any type of area
+    public boolean overlapsWith (RectangularArea other) {
+        return !(upperLeft.getX() > other.upperLeft.getX() + other.width
+                || upperLeft.getX() + width < other.upperLeft.getX()
+                || upperLeft.getY() < other.upperLeft.getY() + other.height
+                || upperLeft.getY() + height < other.upperLeft.getY());
+    }
+    
+    
     private Location upperLeft;
     private int width;
     private int height;
