@@ -85,8 +85,8 @@ public class GamePanel extends JPanel {
             g2d.drawImage(spriteManager.getSpriteImage(object.getSpriteID()),
                 object.getLocation().getX() * widthOfCell,
                 object.getLocation().getY() * heightOfCell,
-                widthOfCell,
-                heightOfCell,
+                widthOfCell * object.getWidth(),
+                heightOfCell * object.getHeight(),
                 this
             );
         }

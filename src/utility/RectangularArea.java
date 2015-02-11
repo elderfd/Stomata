@@ -55,6 +55,14 @@ public class RectangularArea implements Area {
                 location.getY() < upperLeft.getY() + height;
     }
     
+    @Override
+    public Location getCentroid() {
+        int x = upperLeft.getX() + width / 2;
+        int y = upperLeft.getY() + height / 2;
+        
+        return new Location(x, y);
+    }
+    
     // TODO: Would be good to implement overlap checking with any type of area
     public boolean overlapsWith (RectangularArea other) {
         return !(upperLeft.getX() > other.upperLeft.getX() + other.width

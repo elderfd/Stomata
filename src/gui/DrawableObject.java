@@ -15,5 +15,7 @@ import utility.Location;
 public interface DrawableObject {
     public Location getLocation();
     public String getSpriteID();
+    public int getWidth();
+    public int getHeight();
     public Area getHitBox();
 }

@@ -6,7 +6,9 @@
 package gameLogic;
 
 import static java.lang.Math.abs;
+import utility.Area;
 import utility.Location;
+import utility.RectangularArea;
 
 /**
  *
@@ -15,7 +17,7 @@ import utility.Location;
 public class Pathogen extends Entity {
     public Pathogen(Location startLocation, Stoma target) {
         super(startLocation);
-        this.targetLocation = target.getLocation();
+        this.targetStoma = target;
     }
 
     @Override
@@ -28,12 +30,25 @@ public class Pathogen extends Entity {
         return spriteID;
     }
 
-    public Location getTargetLocation() {
-        return targetLocation;
+    @Override
+    public Area getHitBox() {
+        RectangularArea hitBox = new RectangularArea(currentLocation, width, height);
+        
+        return hitBox;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+     
+    @Override
+    public int getHeight() {
+        return height;
     }
     
     public boolean hasHitTarget() {
-        return targetLocation.equals(currentLocation);
+        return targetStoma.getHitBox().containsLocation(currentLocation);
     }
     
     public void updateLocation() {
@@ -42,11 +57,13 @@ public class Pathogen extends Entity {
         // TODO: Make moving better
 
         // Check it hasn't already reached its target
-        if(!targetLocation.equals(currentLocation)) {
+        Location targetCentroid = targetStoma.getHitBox().getCentroid();
+        
+        if(!currentLocation.equals(targetCentroid)) {
             int newX = currentLocation.getX(), newY = currentLocation.getY();
-
-            int xDiff = targetLocation.getX() - currentLocation.getX();
-            int yDiff = targetLocation.getY() - currentLocation.getY();
+            
+            int xDiff = targetCentroid.getX() - currentLocation.getX();
+            int yDiff = targetCentroid.getY() - currentLocation.getY();
             
             // Avoid shooting over the target
             int dist = speed;
@@ -77,9 +94,13 @@ public class Pathogen extends Entity {
     }
     
     // The target the pathogen is heading for
-    private Location targetLocation;
+    private Stoma targetStoma;
     // The number of squares (sorta) that the pathogen can move each time step
     private int speed = 1;
+    
+    // The dimensions of the pathogen
+    private int width = 5;
+    private int height = 5;
     
     private String spriteID = "pathogen";
 }

@@ -78,7 +78,7 @@ public class GameState {
     
     public Stoma getStomaAtLocation(Location location) {
         for(Stoma stoma : stomata) {
-            if(stoma.getLocation().equals(location)) {
+            if(stoma.getHitBox().containsLocation(location)) {
                 return stoma;
             }
         }
@@ -172,8 +172,8 @@ public class GameState {
     private RNG rng;
     
     // Some constants to change later
-    static final private int ARENA_NUM_COLS = 10;
-    static final private int ARENA_NUM_ROWS = 8;
+    static final private int ARENA_NUM_COLS = 200;
+    static final private int ARENA_NUM_ROWS = 150;
     static final private int NUM_STOMATA = 5;
     static final private double PATHOGEN_SPAWN_PROBABILITY = 0.5;
     static final private int PATHOGEN_SPAWN_EVENT_ATTEMPTS = 3;

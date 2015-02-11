@@ -12,7 +12,8 @@ import java.util.ArrayList;
  * @author James
  */
 public interface Area {
-    boolean containsLocation(Location location);
-    Location getRandomLocationInArea(RNG rng);
-    ArrayList<Location> getUniqueListOfRandomLocations(int numberOfLocations, RNG rng);
+    public boolean containsLocation(Location location);
+    public Location getRandomLocationInArea(RNG rng);
+    public ArrayList<Location> getUniqueListOfRandomLocations(int numberOfLocations, RNG rng);
+    public Location getCentroid();
 }
