@@ -100,7 +100,7 @@ public class GameState {
         
         // Move existing pathogens
         for(Entity entity : entities) {
-            entity.updateLocation();
+            entity.updateLocation(rng);
         }
         
         // Add new pathogens if we need to

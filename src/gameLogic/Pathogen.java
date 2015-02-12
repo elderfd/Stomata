@@ -8,6 +8,7 @@ package gameLogic;
 import static java.lang.Math.abs;
 import utility.Area;
 import utility.Location;
+import utility.RNG;
 import utility.RectangularArea;
 
 /**
@@ -52,7 +53,7 @@ public class Pathogen extends Entity {
     }
     
     @Override
-    public void updateLocation() {
+    public void updateLocation(RNG rng) {
         // Move pathogen closer to target
 
         // Check it hasn't already reached its target
@@ -71,7 +72,14 @@ public class Pathogen extends Entity {
                 dist = abs(xDiff);
             }
             
-            if(xDiff > 0) {
+            // Add a wobble
+            if(rng.bernoulliTrial(0.5)) {
+                dist += 1;
+            }else if(rng.bernoulliTrial(0.5)) {
+                dist -= 1;
+            }
+            
+            if(xDiff >= 0) {
                 newX += dist;
             } else if(xDiff < 0) {
                 newX -= dist;
@@ -80,9 +88,16 @@ public class Pathogen extends Entity {
             dist = speed;
             if(dist > abs(yDiff)) {
                 dist = abs(yDiff);
+            }else {
+                // Add a wobble
+                if(rng.bernoulliTrial(0.33)) {
+                    dist += 1;
+                }else if(rng.bernoulliTrial(0.33)) {
+                    dist -= 1;
+                }
             }
             
-            if(yDiff > 0) {
+            if(yDiff >= 0) {
                 newY += dist;
             } else if(yDiff < 0) {
                 newY -= dist;

@@ -7,6 +7,7 @@ package gameLogic;
 
 import gui.DrawableObject;
 import utility.Location;
+import utility.RNG;
 
 /**
  *
@@ -27,7 +28,7 @@ public abstract class Entity implements DrawableObject {
     }
     
     // Updates location to match that at t + 1
-    abstract public void updateLocation();
+    abstract public void updateLocation(RNG rng);
     
     protected Location currentLocation;
 }
