@@ -27,6 +27,7 @@ public class GamePanel extends JPanel {
         inputListener = new UserInputListener(this, mainWindow);
         addMouseListener(inputListener);
         addKeyListener(inputListener);
+        _coordTransform = new CoordinateTransform(this);
         
         this.mainWindow = mainWindow;
         this.state = state;
@@ -62,31 +63,35 @@ public class GamePanel extends JPanel {
         // First empty the screen
         g2d.clearRect(0, 0, getWidth(), getHeight());
         
-        // Need to work out the appropriate scaling for the images
-        int screenWidth = this.getWidth();
-        int screenHeight = this.getHeight();
-        int arenaWidth = state.getWidthOfArena();
-        int arenaHeight = state.getHeightOfArena();
-        
-        int widthOfCell = screenWidth / arenaWidth;
-        int heightOfCell = screenHeight / arenaHeight;
-        
         // Draw the background
         g2d.drawImage(spriteManager.getSpriteImage("background"),
             0,
             0,
-            screenWidth,
-            screenHeight,
+            this.getWidth(),
+            this.getHeight(),
+            this
+        );
+        
+        Location testLocation = coordTransform().gameWorldToScreen(new Location(190, 140));
+        g2d.drawImage ( 
+            spriteManager.getSpriteImage("stomaOpen"),
+            testLocation.getX(),
+            testLocation.getY(),
+            coordTransform().gameWidthToScreenWidth(10),
+            coordTransform().gameHeightToScreenHeight(10),
             this
         );
         
         // Then draw out all of the objects
         for(DrawableObject object : everythingToDraw) {
-            g2d.drawImage(spriteManager.getSpriteImage(object.getSpriteID()),
-                object.getLocation().getX() * widthOfCell,
-                object.getLocation().getY() * heightOfCell,
-                widthOfCell * object.getWidth(),
-                heightOfCell * object.getHeight(),
+            Location screenLocation = coordTransform().gameWorldToScreen(object.getLocation());
+            
+            g2d.drawImage(
+                spriteManager.getSpriteImage(object.getSpriteID()),
+                screenLocation.getX(),
+                screenLocation.getY(),
+                coordTransform().gameWidthToScreenWidth(object.getWidth()),
+                coordTransform().gameHeightToScreenHeight(object.getHeight()),
                 this
             );
         }
@@ -105,8 +110,12 @@ public class GamePanel extends JPanel {
         if(state.finished) {
             String finishedLabel = "Game finished. Press ESC to continue.";
             int stringLength = (int)g2d.getFontMetrics().getStringBounds(finishedLabel, g2d).getWidth();
-            g2d.drawString(finishedLabel, (screenWidth - stringLength)/ 2, screenHeight / 2);
+            g2d.drawString(finishedLabel, (this.getWidth() - stringLength)/ 2, this.getHeight() / 2);
         }
+    }
+    
+    public CoordinateTransform coordTransform() {
+        return _coordTransform;
     }
     
     // Sets the game running
@@ -129,4 +138,5 @@ public class GamePanel extends JPanel {
     private GameState state;
     private UserInputListener inputListener;
     private MainWindow mainWindow;
+    private CoordinateTransform _coordTransform;
 }

@@ -51,19 +51,19 @@ public class Pathogen extends Entity {
         return targetStoma.getHitBox().containsLocation(currentLocation);
     }
     
+    @Override
     public void updateLocation() {
-        // Move pathogen one square closer to target
-
-        // TODO: Make moving better
+        // Move pathogen closer to target
 
         // Check it hasn't already reached its target
         Location targetCentroid = targetStoma.getHitBox().getCentroid();
+        Location currentCentroid = this.getHitBox().getCentroid();
         
-        if(!currentLocation.equals(targetCentroid)) {
+        if(!currentCentroid.equals(targetCentroid)) {
             int newX = currentLocation.getX(), newY = currentLocation.getY();
             
-            int xDiff = targetCentroid.getX() - currentLocation.getX();
-            int yDiff = targetCentroid.getY() - currentLocation.getY();
+            int xDiff = targetCentroid.getX() - currentCentroid.getX();
+            int yDiff = targetCentroid.getY() - currentCentroid.getY();
             
             // Avoid shooting over the target
             int dist = speed;
@@ -96,7 +96,7 @@ public class Pathogen extends Entity {
     // The target the pathogen is heading for
     private Stoma targetStoma;
     // The number of squares (sorta) that the pathogen can move each time step
-    private int speed = 1;
+    private int speed = 5;
     
     // The dimensions of the pathogen
     private int width = 5;

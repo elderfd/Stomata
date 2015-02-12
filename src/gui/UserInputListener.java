@@ -37,10 +37,10 @@ public class UserInputListener implements MouseListener, KeyListener {
     }
     
     public Location getLocationFromMouseEvent(MouseEvent e) {
-        int x = e.getX() * gamePanel.getArenaWidth() / gamePanel.getWidth();
-        int y = e.getY() * gamePanel.getArenaHeight() / gamePanel.getHeight();
-        
-        return new Location(x, y);
+        return new Location(
+            gamePanel.coordTransform().screenWidthToGameWidth(e.getX()),
+            gamePanel.coordTransform().screenHeightToGameHeight(e.getY())
+        );
     }
     
     @Override

@@ -6,6 +6,7 @@
 package gameLogic;
 
 import gui.DrawableObject;
+import static java.lang.Math.abs;
 import utility.Location;
 import utility.RNG;
 import java.util.ArrayList;
@@ -24,12 +25,14 @@ public class GameState {
         
         // Set up key areas in game arena
         // Stomata area is currently bottom half and pathogens top half
-        stomataArea = new RectangularArea(new Location(0, (int)(ARENA_NUM_COLS / 2)),
+        stomataArea = new RectangularArea(
+                new Location(0, (int)(ARENA_NUM_ROWS / 2)),
                 ARENA_NUM_COLS,
                 (int)(ARENA_NUM_ROWS / 2 - 1)
         );
         
-        pathogenSpawnArea = new RectangularArea(new Location(0, 0),
+        pathogenSpawnArea = new RectangularArea(
+                new Location(0, 0),
                 ARENA_NUM_COLS,
                 (int)(ARENA_NUM_ROWS / 2 - 1)
         );
@@ -99,9 +102,25 @@ public class GameState {
         // Add new pathogens if we need to
         for(int i = 0; i < PATHOGEN_SPAWN_EVENT_ATTEMPTS; i++) {
             if(rng.bernoulliTrial(PATHOGEN_SPAWN_PROBABILITY)) {
+                // Spawn the pathogen at a random location
+                Location spawnLocation = pathogenSpawnArea.getRandomLocationInArea(rng);
+                
+                // Target it at the stomata which is nearest horizontally
+                int bestDistance = -1;
+                Stoma target = null;
+                
+                for(Stoma stoma : stomata) {
+                    int horizontalDistance = abs(stoma.getLocation().getX() - spawnLocation.getX());
+                    
+                    if(bestDistance == -1 || horizontalDistance < bestDistance) {
+                        bestDistance = horizontalDistance;
+                        target = stoma;
+                    }
+                }
+                
                 entities.add(new Pathogen(
-                    pathogenSpawnArea.getRandomLocationInArea(rng),
-                    stomata.get(rng.uniformIntInRange(0, stomata.size()))
+                    spawnLocation,
+                    target
                 )
         );
             }

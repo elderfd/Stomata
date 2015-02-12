@@ -28,6 +28,8 @@ public class RectangularArea implements Area {
     
     @Override
     public ArrayList<Location> getUniqueListOfRandomLocations(int numberOfLocations, RNG rng) {
+        // TODO: Probably worth changing this algorithm for something more efficient
+        
         ArrayList<Location> returnList = new ArrayList();
         ArrayList<Location> locationsStillAvailable = new ArrayList<>();
         
