@@ -22,6 +22,8 @@ public abstract class Entity implements DrawableObject {
         currentLocation = newLocation;
     }
     
+    abstract public boolean shouldDie(RNG rng);
+    
     @Override
     public Location getLocation() {
         return currentLocation;

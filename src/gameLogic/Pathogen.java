@@ -16,9 +16,10 @@ import utility.RectangularArea;
  * @author James
  */
 public class Pathogen extends Entity {
-    public Pathogen(Location startLocation, Stoma target) {
+    public Pathogen(Location startLocation, Stoma target, RNG rng) {
         super(startLocation);
         this.targetStoma = target;
+        momentum = new Momentum(rng);
     }
 
     @Override
@@ -52,6 +53,10 @@ public class Pathogen extends Entity {
         return targetStoma.getHitBox().containsLocation(currentLocation);
     }
     
+    public boolean shouldDie(RNG rng) {
+        return rng.bernoulliTrial(1 / meanAge);
+    }
+    
     @Override
     public void updateLocation(RNG rng) {
         // Move pathogen closer to target
@@ -61,40 +66,16 @@ public class Pathogen extends Entity {
         Location currentCentroid = this.getHitBox().getCentroid();
         
         if(!currentCentroid.equals(targetCentroid)) {
+            momentum.tweak(rng);
+            
             int newX = currentLocation.getX(), newY = currentLocation.getY();
             
             int xDiff = targetCentroid.getX() - currentCentroid.getX();
             int yDiff = targetCentroid.getY() - currentCentroid.getY();
             
-            // Avoid shooting over the target
             int dist = speed;
-            if(dist > abs(xDiff)) {
-                dist = abs(xDiff);
-            }
-            
-            // Add a wobble
-            if(rng.bernoulliTrial(0.5)) {
-                dist += 1;
-            }else if(rng.bernoulliTrial(0.5)) {
-                dist -= 1;
-            }
-            
-            if(xDiff >= 0) {
-                newX += dist;
-            } else if(xDiff < 0) {
-                newX -= dist;
-            }
-
-            dist = speed;
             if(dist > abs(yDiff)) {
                 dist = abs(yDiff);
-            }else {
-                // Add a wobble
-                if(rng.bernoulliTrial(0.33)) {
-                    dist += 1;
-                }else if(rng.bernoulliTrial(0.33)) {
-                    dist -= 1;
-                }
             }
             
             if(yDiff >= 0) {
@@ -102,7 +83,16 @@ public class Pathogen extends Entity {
             } else if(yDiff < 0) {
                 newY -= dist;
             }
-
+            
+            // Don't move if at target height
+            if(dist != 0) {
+                dist = speed;
+                
+                dist *= momentum.getEffect();
+            }
+            
+            newX += dist;
+            
             currentLocation.setX(newX);
             currentLocation.setY(newY);
         }
@@ -118,4 +108,48 @@ public class Pathogen extends Entity {
     private int height = 5;
     
     private String spriteID = "pathogen";
+ 
+    // Describes the bias in the movement of the pathogen
+    // Should get runs from left to right
+    private class Momentum {
+        Momentum(RNG rng) {
+            direction = rng.bernoulliTrial(0.5);
+            strength = 1;
+            decay = 0.99;
+        }
+        
+        public void tweak(RNG rng) {
+            if(rng.bernoulliTrial(1 - strength)) {
+                direction = !direction;
+                strength *= 1; 
+            } else {
+                strength *= decay;
+            }
+        }
+        
+        public int getEffect() {
+            if(direction) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+        
+        // True means left, false means right
+        private boolean direction;
+        
+        // Complement of probability of direction change
+        private double strength; 
+        
+        // Decay of strength with each twek
+        private double decay;
+    };
+    private Momentum momentum;
+    
+    // How many steps the pathogen has existed for
+    private int _age;
+    
+    // The mean number of steps a pathogen will live for
+    private double meanAge = 70;
+    
 }

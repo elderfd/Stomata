@@ -10,6 +10,7 @@ import static java.lang.Math.abs;
 import utility.Location;
 import utility.RNG;
 import java.util.ArrayList;
+import java.util.Collections;
 import utility.RectangularArea;
 
 /**
@@ -99,8 +100,24 @@ public class GameState {
         // TODO: Put some collision-detection in
         
         // Move existing pathogens
+        ArrayList<Integer> indicesToRemove = new ArrayList<>();
+        int counter = 0;
+        
         for(Entity entity : entities) {
-            entity.updateLocation(rng);
+            // Test for removal
+            if(entity.shouldDie(rng)) {
+                indicesToRemove.add(counter);
+            } else {
+                entity.updateLocation(rng);
+            } 
+            
+            counter++;
+        }
+        
+        Collections.sort(indicesToRemove, Collections.reverseOrder());
+        
+        for(int index : indicesToRemove) {
+            entities.remove(index);
         }
         
         // Add new pathogens if we need to
@@ -124,7 +141,8 @@ public class GameState {
                 
                 entities.add(new Pathogen(
                     spawnLocation,
-                    target
+                    target,
+                    rng
                 )
         );
             }
