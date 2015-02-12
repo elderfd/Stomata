@@ -72,16 +72,6 @@ public class GamePanel extends JPanel {
             this
         );
         
-        Location testLocation = coordTransform().gameWorldToScreen(new Location(190, 140));
-        g2d.drawImage ( 
-            spriteManager.getSpriteImage("stomaOpen"),
-            testLocation.getX(),
-            testLocation.getY(),
-            coordTransform().gameWidthToScreenWidth(10),
-            coordTransform().gameHeightToScreenHeight(10),
-            this
-        );
-        
         // Then draw out all of the objects
         for(DrawableObject object : everythingToDraw) {
             Location screenLocation = coordTransform().gameWorldToScreen(object.getLocation());

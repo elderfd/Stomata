@@ -31,27 +31,19 @@ public class CoordinateTransform {
     }
     
     public int gameHeightToScreenHeight(int gameHeight) {
-        int screenPixelsPerHeight = panel.getHeight() / panel.getArenaHeight();
-        
-        return gameHeight * screenPixelsPerHeight;
+        return panel.getHeight() * gameHeight / panel.getArenaHeight();
     }
     
     public int gameWidthToScreenWidth(int gameWidth) {
-        int screenPixelsPerWidth = panel.getWidth() / panel.getArenaWidth();
-        
-        return gameWidth * screenPixelsPerWidth;
+        return panel.getWidth() * gameWidth / panel.getArenaWidth();
     }
     
     public int screenHeightToGameHeight(int screenHeight) {
-        int screenPixelsPerHeight = panel.getHeight() / panel.getArenaHeight();
-        
-        return screenHeight / screenPixelsPerHeight;
+        return panel.getArenaHeight() * screenHeight / panel.getHeight();
     }
     
     public int screenWidthToGameWidth(int screenWidth) {
-        int screenPixelsPerWidth = panel.getWidth() / panel.getArenaWidth();
-        
-        return screenWidth / screenPixelsPerWidth;
+        return panel.getArenaWidth() * screenWidth / panel.getWidth();
     }
     
     // Needs to be attached to a panel to allow proper transformation
