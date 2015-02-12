@@ -24,17 +24,21 @@ public class GameState {
         rng = new RNG();
         
         // Set up key areas in game arena
-        // Stomata area is currently bottom half and pathogens top half
+        // Stomata area is currently bottom half
+        // Take into account height and width of stomata so they don't go off the edge
+        Stoma testStoma = new Stoma(null);
+        
         stomataArea = new RectangularArea(
                 new Location(0, (int)(ARENA_NUM_ROWS / 2)),
-                ARENA_NUM_COLS,
-                (int)(ARENA_NUM_ROWS / 2 - 1)
+                ARENA_NUM_COLS - testStoma.getWidth(),
+                (int)(ARENA_NUM_ROWS / 2 - testStoma.getHeight())
         );
         
+        // Pathogens can only spawn from top of screen
         pathogenSpawnArea = new RectangularArea(
                 new Location(0, 0),
                 ARENA_NUM_COLS,
-                (int)(ARENA_NUM_ROWS / 2 - 1)
+                1
         );
         
         populateRandomStomata();
