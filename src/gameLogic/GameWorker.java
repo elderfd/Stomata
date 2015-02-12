@@ -21,6 +21,10 @@ public class GameWorker extends SwingWorker<Void, Void> {
         this.mainWindow = mainWindow;
     }
     
+    public void cancel() {
+        cancelRequested = true;
+    }
+    
     @Override
     public Void doInBackground() {
         boolean keepRunning = true;
@@ -30,6 +34,9 @@ public class GameWorker extends SwingWorker<Void, Void> {
         int gameStepCounter = 0;
         
         while(keepRunning) {
+            if(cancelRequested) {
+                return null;
+            }
             
             // Check if we need to move the state on and redraw things
             if(System.currentTimeMillis() >= timeOfLastGameStep + minGameStepIntervalInMillisecs) {
@@ -61,4 +68,5 @@ public class GameWorker extends SwingWorker<Void, Void> {
     private GameState state;
     private GamePanel gamePanel;
     private MainWindow mainWindow;
+    private boolean cancelRequested;
 }

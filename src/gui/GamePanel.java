@@ -40,6 +40,9 @@ public class GamePanel extends JPanel {
     }
     
     public void exit() {
+        if(workThread != null) {
+            workThread.cancel();
+        }
         mainWindow.showMainMenu();
     }
     
@@ -110,7 +113,7 @@ public class GamePanel extends JPanel {
     
     // Sets the game running
     public void run() {  
-        GameWorker workThread = new GameWorker(state, this, mainWindow);
+        workThread = new GameWorker(state, this, mainWindow);
         
         workThread.execute();
     }
@@ -129,4 +132,5 @@ public class GamePanel extends JPanel {
     private UserInputListener inputListener;
     private MainWindow mainWindow;
     private CoordinateTransform _coordTransform;
+    private GameWorker workThread = null;
 }
