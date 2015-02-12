@@ -63,7 +63,7 @@ public class GameWorker extends SwingWorker<Void, Void> {
         gamePanel.update();
     }
     
-    private final static double MIN_GAME_STEP_INTERVAL_IN_SECS = 0.5;
+    private final static double MIN_GAME_STEP_INTERVAL_IN_SECS = 0.05;
     private final static double MAX_GAME_TIME_IN_SECS = 60;
     private GameState state;
     private GamePanel gamePanel;
