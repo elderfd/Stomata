@@ -68,6 +68,6 @@ public class Stoma implements DrawableObject {
     private String closedSpriteID = "stomaClosed";
     
     // Dimensions of stoma
-    private int width = 10;
-    private int height = 10;
+    private int width = 20;
+    private int height = 20;
 }

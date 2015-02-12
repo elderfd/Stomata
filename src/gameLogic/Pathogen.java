@@ -89,6 +89,21 @@ public class Pathogen extends Entity {
                 dist = speed;
                 
                 dist *= momentum.getEffect();
+                
+                // Bias towards the stomata
+                int maxBias = 2;
+                
+                if(maxBias > abs(xDiff)) {
+                    maxBias = abs(xDiff);
+                }
+                
+                if(rng.bernoulliTrial(0.2)) {
+                    if(xDiff < 0) {
+                        dist -= maxBias;
+                    } else if(xDiff > 0) {
+                        dist += maxBias;
+                    }
+                }  
             }
             
             newX += dist;
