@@ -16,4 +16,5 @@ public interface Area {
     public Location getRandomLocationInArea(RNG rng);
     public ArrayList<Location> getUniqueListOfRandomLocations(int numberOfLocations, RNG rng);
     public Location getCentroid();
+    public boolean overlapsWith(RectangularArea other);
 }

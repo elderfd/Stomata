@@ -30,9 +30,9 @@ public class SpriteManager {
         );
         List<String> fileNames = Arrays.asList(
             "stomaOpen.jpg",
-            "stomaClosed.jpg",
+            "stomaClosed.png",
             "background.jpg",
-            "pathogen.jpg"
+            "EvileSpore.png"
         );
         
         String imageFolderName = "images/";

@@ -28,6 +28,7 @@ public class GamePanel extends JPanel {
         addMouseListener(inputListener);
         addKeyListener(inputListener);
         _coordTransform = new CoordinateTransform(this);
+        _rateController = new RateController(this);
         
         this.mainWindow = mainWindow;
         this.state = state;
@@ -52,6 +53,10 @@ public class GamePanel extends JPanel {
     
     public int getArenaWidth() {
         return state.getWidthOfArena();
+    }
+    
+    public RateController rateController() {
+        return _rateController;
     }
     
     @Override
@@ -133,4 +138,5 @@ public class GamePanel extends JPanel {
     private MainWindow mainWindow;
     private CoordinateTransform _coordTransform;
     private GameWorker workThread = null;
+    private RateController _rateController;
 }

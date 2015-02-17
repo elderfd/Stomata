@@ -18,6 +18,10 @@ public class RectangularArea implements Area {
         this.height = height;
     }
     
+    public Location getUpperLeft() {
+        return upperLeft;
+    }
+    
     @Override
     public Location getRandomLocationInArea(RNG rng) {
         int x = rng.uniformIntInRange(upperLeft.getX(), upperLeft.getX() + width);

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg4297"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="ClosedStomata.svg">
+  <defs
+     id="defs4299" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="346.16071"
+     inkscape:cy="124.90208"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="785"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4302">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#0fea00;fill-opacity:1;fill-rule:evenodd;stroke:#006400;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path3349-2"
+       sodipodi:type="arc"
+       sodipodi:cx="380.00015"
+       sodipodi:cy="-915.21906"
+       sodipodi:rx="22.5"
+       sodipodi:ry="30"
+       sodipodi:start="0"
+       sodipodi:end="6.205745"
+       sodipodi:open="true"
+       d="m 402.50015,-915.21906 a 22.5,30 0 0 1 -22.06442,29.99438 22.5,30 0 0 1 -22.91871,-28.83306 22.5,30 0 0 1 21.17706,-31.11073 22.5,30 0 0 1 23.73864,27.62853"
+       transform="scale(1,-1)"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/Users/ciaradangerfield/ClosedStomata.png" />
+    <path
+       style="fill:#03120a;fill-opacity:0.9807692;fill-rule:evenodd;stroke:#f2efef;stroke-width:4.36399984;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.17307691"
+       id="path3344-1"
+       sodipodi:type="arc"
+       sodipodi:cx="381.061"
+       sodipodi:cy="-916.07776"
+       sodipodi:rx="2.2048159"
+       sodipodi:ry="18.699274"
+       sodipodi:start="0"
+       sodipodi:end="6.2057506"
+       d="m 383.26582,-916.07776 a 2.2048159,18.699274 0 0 1 -2.16214,18.69577 2.2048159,18.699274 0 0 1 -2.24584,-17.97196 2.2048159,18.699274 0 0 1 2.07519,-19.39156 2.2048159,18.699274 0 0 1 2.32618,17.22123"
+       sodipodi:open="true"
+       transform="scale(1,-1)"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/Users/ciaradangerfield/ClosedStomata.png" />
+  </g>
+</svg>

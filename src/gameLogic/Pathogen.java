@@ -50,7 +50,7 @@ public class Pathogen extends Entity {
     }
     
     public boolean hasHitTarget() {
-        return targetStoma.getHitBox().containsLocation(currentLocation);
+        return targetStoma.getHitBox().overlapsWith((RectangularArea)this.getHitBox());
     }
     
     public boolean shouldDie(RNG rng) {
@@ -165,6 +165,5 @@ public class Pathogen extends Entity {
     private int _age;
     
     // The mean number of steps a pathogen will live for
-    private double meanAge = 70;
-    
+    private double meanAge = 250;
 }
