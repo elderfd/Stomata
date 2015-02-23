@@ -94,11 +94,7 @@ public class GameState {
         return null;
     }
     
-    public void updateGameState () {
-        // TODO: Better game logic
-        
-        // TODO: Put some collision-detection in
-        
+    public void updateGameState () {        
         // Move existing pathogens
         ArrayList<Integer> indicesToRemove = new ArrayList<>();
         int counter = 0;
@@ -171,14 +167,13 @@ public class GameState {
         }
         
         // Remove points (and pathogens!) for any hits on target when stomata is open
-        // TODO: Generalise this away from pathogens
         int pointCostPerPathogen = 20;
         
         ArrayList<Pathogen> entitiesToRemove = new ArrayList();
         
         for(Pathogen pathogen : pathogens) {            
             if(pathogen.hasHitTarget()) {
-                Stoma stomaAtLocation = getStomaAtLocation(pathogen.getLocation());
+                Stoma stomaAtLocation = pathogen.getTarget();
                 
                 if(stomaAtLocation != null &&
                     stomaAtLocation.isOpen()

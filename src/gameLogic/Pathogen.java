@@ -28,6 +28,10 @@ public class Pathogen implements DrawableObject {
         currentLocation = newLocation;
     }
     
+    public Stoma getTarget() {
+        return targetStoma;
+    };
+    
     public Location getLocation() {
         return currentLocation;
     }
@@ -58,6 +62,8 @@ public class Pathogen implements DrawableObject {
         boolean dies = false;
         
         if(hasLanded) {
+            double test = decayProbability.toPerFrame().value();
+            
             dies = rng.bernoulliTrial(decayProbability.toPerFrame().value());
         }
         
@@ -67,12 +73,12 @@ public class Pathogen implements DrawableObject {
     public void updateLocation(RNG rng) {
         // Move pathogen closer to target
 
-        // Check it hasn't already reached its target
-        Location targetCentroid = targetStoma.getHitBox().getCentroid();
-        Location currentCentroid = this.getHitBox().getCentroid();
-        
-        if(!currentCentroid.equals(targetCentroid)) {
+        // Check it hasn't already reached its target        
+        if(!hasHitTarget()) {
             momentum.tweak(rng);
+            
+            Location targetCentroid = targetStoma.getHitBox().getCentroid();
+            Location currentCentroid = this.getHitBox().getCentroid();
             
             int newX = currentLocation.getX(), newY = currentLocation.getY();
             
@@ -90,28 +96,34 @@ public class Pathogen implements DrawableObject {
                 newY -= dist;
             }
             
-            // Don't move if at target height
-            if(dist != 0) {
-                dist = speed;
-                
+            // Less erratic movement if at target height (also starts decaying)
+            dist = speed;
+
+            if(yDiff != 0) {
                 dist *= momentum.getEffect();
                 
                 // Bias towards the stomata
-                int maxBias = 2;
+//                int maxBias = 0;
+//
+//                if(maxBias > abs(xDiff)) {
+//                    maxBias = abs(xDiff);
+//                }
                 
-                if(maxBias > abs(xDiff)) {
-                    maxBias = abs(xDiff);
+//                if(rng.bernoulliTrial(0.2)) {
+//                    if(xDiff < 0) {
+//                        dist -= maxBias;
+//                    } else if(xDiff > 0) {
+//                        dist += maxBias;
+//                    }
+//                }  
+            } else {
+                hasLanded = true;
+                
+                if(xDiff < 0) {
+                    dist *= -1;
                 }
-                
-                if(rng.bernoulliTrial(0.2)) {
-                    if(xDiff < 0) {
-                        dist -= maxBias;
-                    } else if(xDiff > 0) {
-                        dist += maxBias;
-                    }
-                }  
             }
-            
+
             newX += dist;
             
             currentLocation.setX(newX);
@@ -125,8 +137,8 @@ public class Pathogen implements DrawableObject {
     private int speed = 1;
     
     // The dimensions of the pathogen
-    private int width = 5;
-    private int height = 5;
+    private int width = 10;
+    private int height = 10;
     
     private String spriteID = "pathogen";
  
@@ -142,7 +154,7 @@ public class Pathogen implements DrawableObject {
         public void tweak(RNG rng) {
             if(rng.bernoulliTrial(1 - strength)) {
                 direction = !direction;
-                strength *= 1; 
+                strength = 1; 
             } else {
                 strength *= decay;
             }

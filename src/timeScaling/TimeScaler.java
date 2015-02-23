@@ -10,20 +10,12 @@ package timeScaling;
  * @author James
  */
 class TimeScaler {
-    public static int perFrameToPerSecond(int perFrameRate) {
-        return perFrameRate / targetFPS;
-    }
-    
     public static double perFrameToPerSecond(double perFrameRate) {
-        return perFrameRate / (double)targetFPS;
+        return perFrameRate * targetFPS;
     }    
     
-    public static int perSecondToPerFrame(int perSecondRate) {
-        return perSecondRate * targetFPS;
-    }
-    
     public static double perSecondToPerFrame(double perSecondRate) {
-        return perSecondRate * targetFPS;
+        return perSecondRate / targetFPS;
     }
     
     public static double secondsToFrames(double seconds) {

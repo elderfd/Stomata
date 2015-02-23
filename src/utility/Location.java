@@ -1,7 +1,5 @@
 package utility;
 
-import utility.RNG;
-
 public class Location {
     // Produces location at set location
     public Location(int x, int y) {
