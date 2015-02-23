@@ -9,22 +9,22 @@ package timeScaling;
  *
  * @author James
  */
-public class RatePerSecond<T extends Number> {
-    public RatePerSecond(T value) {
+public class RatePerSecond {
+    public RatePerSecond(double value) {
         _value = value;
     }
     
-    public void setValue(T value) {
+    public void setValue(double value) {
         _value = value;
     }
     
-    public T value() {
+    public double value() {
         return _value;
     }
     
     public RatePerFrame toPerFrame() {
-        return new RatePerFrame(_value);
+        return new RatePerFrame(TimeScaler.perSecondToPerFrame(_value));
     }
     
-    protected T _value;
+    protected double _value;
 }

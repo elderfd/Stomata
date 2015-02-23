@@ -7,9 +7,9 @@ package gui;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.List;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 
 /**
  *
@@ -22,26 +22,45 @@ public class SpriteManager {
     }
     
     private void loadStandardSprites() {
-        List<String> spriteIDs = Arrays.asList(
-            "stomaOpen",
-            "stomaClosed",
-            "background",
-            "pathogen"
-        );
-        List<String> fileNames = Arrays.asList(
-            "stomaOpen.jpg",
-            "stomaClosed.png",
-            "background.jpg",
-            "EvileSpore.png"
-        );
+        // Utility class
+        class SpriteIDAndFileName {
+            SpriteIDAndFileName(String ID, String fileName) {
+                _ID = ID;
+                _fileName = fileName;
+            }
+            
+            public String ID() {
+                return _ID;
+            }
+            
+            public String fileName() {
+                return _fileName;
+            }
+            
+            String _ID;
+            String _fileName;
+        }
+        
+        ArrayList<SpriteIDAndFileName> spriteIDsAndFileNames = new ArrayList<>();
+        
+        // Lambda to neaten up syntax
+        BiConsumer<String, String> addIDFileNamePair = (String ID, String fileName) -> {
+            spriteIDsAndFileNames.add(new SpriteIDAndFileName(ID, fileName));
+        };
+        
+        // Add all the data we'll need
+        addIDFileNamePair.accept("stomaOpen", "stomaOpen.png");
+        addIDFileNamePair.accept("stomaClosed", "stomaClosed.png");
+        addIDFileNamePair.accept("background", "background.jpg");
+        addIDFileNamePair.accept("pathogen", "EvileSpore.png");
         
         String imageFolderName = "images/";
         
-        for(int i = 0; i < spriteIDs.size(); i++) {
+        for(SpriteIDAndFileName pair : spriteIDsAndFileNames) {
             Sprite newSprite = new Sprite();
             
             try {
-                newSprite.loadFromFile(imageFolderName + fileNames.get(i));
+                newSprite.loadFromFile(imageFolderName + pair.fileName());
             } catch(IOException e) {
                 try {
                     newSprite.loadFromFile(imageFolderName + placeholderFileName);
@@ -51,7 +70,7 @@ public class SpriteManager {
                 }
             }
             
-            nameToSpriteMap.put(spriteIDs.get(i), newSprite);
+            nameToSpriteMap.put(pair.ID(), newSprite);
         }       
     }
     

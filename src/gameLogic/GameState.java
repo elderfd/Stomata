@@ -21,7 +21,7 @@ import utility.RectangularArea;
 public class GameState {
     public GameState() {
         stomata = new ArrayList<>();
-        entities = new ArrayList<>();
+        pathogens = new ArrayList<>();
         rng = new RNG();
         
         // Set up key areas in game arena
@@ -55,16 +55,16 @@ public class GameState {
             returnList.add(stoma);
         }
         
-        // Return entities second so they draw over the top
-        for(Entity entity : entities) {
-            returnList.add(entity);
+        // Return pathogens second so they draw over the top
+        for(Pathogen pathogen : pathogens) {
+            returnList.add(pathogen);
         }
         
         return returnList;
     }
     
     public void reset() {
-        entities.clear();
+        pathogens.clear();
         populateRandomStomata();
         finished = false;
         
@@ -103,12 +103,12 @@ public class GameState {
         ArrayList<Integer> indicesToRemove = new ArrayList<>();
         int counter = 0;
         
-        for(Entity entity : entities) {
+        for(Pathogen pathogen : pathogens) {
             // Test for removal
-            if(entity.shouldDie(rng)) {
+            if(pathogen.shouldDie(rng)) {
                 indicesToRemove.add(counter);
             } else {
-                entity.updateLocation(rng);
+                pathogen.updateLocation(rng);
             } 
             
             counter++;
@@ -117,7 +117,7 @@ public class GameState {
         Collections.sort(indicesToRemove, Collections.reverseOrder());
         
         for(int index : indicesToRemove) {
-            entities.remove(index);
+            pathogens.remove(index);
         }
         
         // Add new pathogens if we need to
@@ -139,7 +139,7 @@ public class GameState {
                     }
                 }
                 
-                entities.add(new Pathogen(
+                pathogens.add(new Pathogen(
                     spawnLocation,
                     target,
                     rng
@@ -171,14 +171,12 @@ public class GameState {
         }
         
         // Remove points (and pathogens!) for any hits on target when stomata is open
-        // TODO: Generalise this away from entities
+        // TODO: Generalise this away from pathogens
         int pointCostPerPathogen = 20;
         
-        ArrayList<Entity> entitiesToRemove = new ArrayList();
+        ArrayList<Pathogen> entitiesToRemove = new ArrayList();
         
-        for(Entity entity : entities) {
-            Pathogen pathogen = (Pathogen)(entity);
-            
+        for(Pathogen pathogen : pathogens) {            
             if(pathogen.hasHitTarget()) {
                 Stoma stomaAtLocation = getStomaAtLocation(pathogen.getLocation());
                 
@@ -188,11 +186,11 @@ public class GameState {
                     points -= pointCostPerPathogen;
                 }
                 
-                entitiesToRemove.add(entity);
+                entitiesToRemove.add(pathogen);
             } 
         }
         
-        entities.removeAll(entitiesToRemove);
+        pathogens.removeAll(entitiesToRemove);
     }
     
     public int getPoints() {
@@ -208,7 +206,7 @@ public class GameState {
     }
     
     private ArrayList<Stoma> stomata;
-    private ArrayList<Entity> entities;
+    private ArrayList<Pathogen> pathogens;
     
     private RNG rng;
     

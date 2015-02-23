@@ -5,7 +5,9 @@
  */
 package gameLogic;
 
+import gui.DrawableObject;
 import static java.lang.Math.abs;
+import timeScaling.RatePerSecond;
 import utility.Area;
 import utility.Location;
 import utility.RNG;
@@ -15,36 +17,35 @@ import utility.RectangularArea;
  *
  * @author James
  */
-public class Pathogen extends Entity {
+public class Pathogen implements DrawableObject {
     public Pathogen(Location startLocation, Stoma target, RNG rng) {
-        super(startLocation);
+        this.currentLocation = startLocation;
         this.targetStoma = target;
         momentum = new Momentum(rng);
     }
 
-    @Override
+    public void setLocation(Location newLocation) {
+        currentLocation = newLocation;
+    }
+    
     public Location getLocation() {
         return currentLocation;
     }
 
-    @Override
     public String getSpriteID() {
         return spriteID;
     }
 
-    @Override
     public Area getHitBox() {
         RectangularArea hitBox = new RectangularArea(currentLocation, width, height);
         
         return hitBox;
     }
 
-    @Override
     public int getWidth() {
         return width;
     }
      
-    @Override
     public int getHeight() {
         return height;
     }
@@ -54,10 +55,15 @@ public class Pathogen extends Entity {
     }
     
     public boolean shouldDie(RNG rng) {
-        return rng.bernoulliTrial(1 / meanAge);
+        boolean dies = false;
+        
+        if(hasLanded) {
+            dies = rng.bernoulliTrial(decayProbability.toPerFrame().value());
+        }
+        
+        return dies;
     }
     
-    @Override
     public void updateLocation(RNG rng) {
         // Move pathogen closer to target
 
@@ -164,6 +170,11 @@ public class Pathogen extends Entity {
     // How many steps the pathogen has existed for
     private int _age;
     
-    // The mean number of steps a pathogen will live for
-    private double meanAge = 250;
+    // Whether or not the pathogen has landed on the surface of the leaf
+    private boolean hasLanded = false;
+    
+    // Decay probability per second
+    private RatePerSecond decayProbability = new RatePerSecond(0.4);
+    
+    protected Location currentLocation;
 }

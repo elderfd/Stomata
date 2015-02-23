@@ -9,8 +9,8 @@ package timeScaling;
  *
  * @author James
  */
-public class RatePerFrame {
-    public RatePerFrame(double value) {
+public class TimeInFrames {
+    public TimeInFrames(double value) {
         _value = value;
     }
     
@@ -22,8 +22,8 @@ public class RatePerFrame {
         return _value;
     }
     
-    public RatePerSecond toPerSecond() {
-        return new RatePerSecond(TimeScaler.perFrameToPerSecond(_value));
+    public TimeInSeconds toTimeInSeconds() {
+        return new TimeInSeconds(TimeScaler.framesToSeconds(_value));
     }
     
     protected double _value;
