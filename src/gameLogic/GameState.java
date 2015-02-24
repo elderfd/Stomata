@@ -11,6 +11,7 @@ import utility.Location;
 import utility.RNG;
 import java.util.ArrayList;
 import java.util.Collections;
+import timeScaling.RatePerFrame;
 import timeScaling.RatePerSecond;
 import utility.PoissonDistribution;
 import utility.RectangularArea;
@@ -91,6 +92,37 @@ public class GameState {
         return stomata;
     }
     
+    public double timeInDay() {
+        return timeInHours % 24;
+    }
+    
+    public double getBrightnessFactor() {
+        double brightnessFactor;
+        
+        double sunrise = 6;
+        double sunset = 21;
+        double timeToSetOrRise = 2;
+        double midday = sunrise + (sunset - sunrise) / 2; 
+        
+        // Should be dark at night
+        if(timeInDay() < sunrise || timeInDay() > sunset) {
+            brightnessFactor = 0;
+        } else {
+            double timeFromSunrise = timeInDay() - sunrise;
+            double timeFromSunset = sunset - timeInDay();
+            
+            if(timeFromSunrise < timeToSetOrRise) {
+                brightnessFactor = timeFromSunrise / timeToSetOrRise;
+            } else if(timeFromSunset < timeToSetOrRise) {
+                brightnessFactor = timeFromSunset / timeToSetOrRise;
+            } else {
+                brightnessFactor = 1;
+            }
+        }
+        
+        return brightnessFactor;
+    }
+    
     public Stoma getStomaAtLocation(Location location) {
         for(Stoma stoma : stomata) {
             if(stoma.getHitBox().containsLocation(location)) {
@@ -165,6 +197,9 @@ public class GameState {
         }   
         
         _pointsManager.tick();
+        
+        // Increase the time
+        timeInHours += timeIncreaseRate.value();
     }
     
     // Populates the arena randomly with stomata
@@ -208,6 +243,9 @@ public class GameState {
     final private RectangularArea pathogenSpawnArea;
     
     public boolean finished;
+    
+    public double timeInHours = 0;
+    public RatePerFrame timeIncreaseRate = new RatePerSecond(2).toPerFrame();
     
     private PointsManager _pointsManager;
 }

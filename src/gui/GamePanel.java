@@ -36,6 +36,7 @@ public class GamePanel extends JPanel {
     
     public void update () {
         everythingToDraw = state.getAllDrawableObjects();
+        calculateLightingColor();
         repaint();
     }
     
@@ -54,6 +55,24 @@ public class GamePanel extends JPanel {
         return state.getWidthOfArena();
     }
  
+    public void calculateLightingColor() {
+        double brightnessFactor = state.getBrightnessFactor();
+        
+        // Produce a properly scaled lighting color
+        int red = 0, green = 0, blue = 0;
+        
+        int brightestAlpha = 0;
+        int darkestAlpha = 200;
+        int alphaDiff = darkestAlpha - brightestAlpha;
+        
+        int alpha = (int) ((1 - brightnessFactor) * alphaDiff + brightestAlpha);
+        
+        if(brightnessFactor > 0) {
+            int i = 0;
+        }
+        
+        lightingColor = new Color(red, green, blue, alpha);
+    }
     
     @Override
     public void paintComponent(Graphics g) {
@@ -90,9 +109,14 @@ public class GamePanel extends JPanel {
             );
         }
         
-        // Finally draw on the number of points
-        int pointsLabelX = 30;
-        int pointsLabelY = 30;
+        // Add lighting effects
+        g2d.setColor(lightingColor);
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+        
+        // Finally draw on some useful info
+        int labelX = 30;
+        int ySkip = 30;
+        int labelY = ySkip;
         
         String pointsLabel = "Points: " + String.format(
             "%.2f",
@@ -101,7 +125,29 @@ public class GamePanel extends JPanel {
         g2d.setColor(Color.red);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30)); 
         
-        g2d.drawString(pointsLabel, pointsLabelX, pointsLabelY);
+        g2d.drawString(pointsLabel, labelX, labelY);
+        
+        labelY += ySkip;
+        
+        String timeLabel = "Time: " + String.format(
+            "%02d:00",
+            (int)state.timeInDay()
+        );
+        
+        g2d.drawString(timeLabel, labelX, labelY);
+        
+        labelY += ySkip;
+        
+        // For debugging
+        if(true) {
+            g2d.setColor(Color.GREEN);
+            String brightnessLabel = "Brightness: " + String.format (
+                "%.2f",
+                state.getBrightnessFactor()
+            );
+            
+            g2d.drawString(brightnessLabel, labelX, labelY + 30);
+        }
         
         // Game is finished then present a message saying so
         if(state.finished) {
@@ -137,4 +183,5 @@ public class GamePanel extends JPanel {
     private MainWindow mainWindow;
     private CoordinateTransform _coordTransform;
     private GameWorker workThread = null;
+    private Color lightingColor;
 }
