@@ -1,7 +1,7 @@
 /* 
  * The MIT License
  *
- * Copyright 2015 James.
+ * Copyright 2015 James Elderfield.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@ package timeScaling;
 
 /**
  *
- * @author James
+ * @author James Elderfield
  */
 public class TimeInFrames {
     public TimeInFrames(double value) {

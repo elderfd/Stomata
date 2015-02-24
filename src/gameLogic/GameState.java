@@ -1,7 +1,7 @@
 /* 
  * The MIT License
  *
- * Copyright 2015 James.
+ * Copyright 2015 James Elderfield.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ import utility.RectangularArea;
 /**
  * This class holds the state of a game at time t. Can be interrogated to get
  * the state and can calculate the state at time t + 1.
- * @author James
+ * @author James Elderfield
  */
 public class GameState {
     public GameState() {
