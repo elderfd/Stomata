@@ -94,7 +94,10 @@ public class GamePanel extends JPanel {
         int pointsLabelX = 30;
         int pointsLabelY = 30;
         
-        String pointsLabel = "Points: " + String.valueOf(state.getPoints());
+        String pointsLabel = "Points: " + String.format(
+            "%.2f",
+            state.pointsManager().points()
+        );
         g2d.setColor(Color.red);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30)); 
         

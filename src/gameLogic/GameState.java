@@ -25,6 +25,7 @@ public class GameState {
         stomata = new ArrayList<>();
         pathogens = new ArrayList<>();
         rng = new RNG();
+        _pointsManager = new PointsManager(this);
         
         // Set up key areas in game arena
         // Stomata area is currently bottom half
@@ -70,7 +71,7 @@ public class GameState {
         populateRandomStomata();
         finished = false;
         
-        points = 0;
+        _pointsManager.reset();
     }
     
     // Returns whether anything changed
@@ -84,6 +85,10 @@ public class GameState {
         }
         
         return false;
+    }
+    
+    public ArrayList<Stoma> getStomata() {
+        return stomata;
     }
     
     public Stoma getStomaAtLocation(Location location) {
@@ -108,6 +113,16 @@ public class GameState {
             } else {
                 pathogen.updateLocation(rng);
             } 
+            
+            // Check for collision with target
+            if(pathogen.hasHitTarget()) {
+                indicesToRemove.add(counter);
+                
+                // Only points lost if the stoma is open
+                if(pathogen.getTarget().isOpen()) {
+                    _pointsManager.infectionEvent();
+                }
+            }
             
             counter++;
         }
@@ -149,7 +164,7 @@ public class GameState {
             }
         }   
         
-        updatePoints();
+        _pointsManager.tick();
     }
     
     // Populates the arena randomly with stomata
@@ -163,38 +178,8 @@ public class GameState {
         }
     }
     
-    public void updatePoints() {
-        // Add some points for all open stomata
-        int pointsPerOpenStoma = 10;
-        
-        for(Stoma stoma : stomata) {
-            if(stoma.isOpen()) points += pointsPerOpenStoma;
-        }
-        
-        // Remove points (and pathogens!) for any hits on target when stomata is open
-        int pointCostPerPathogen = 20;
-        
-        ArrayList<Pathogen> entitiesToRemove = new ArrayList();
-        
-        for(Pathogen pathogen : pathogens) {            
-            if(pathogen.hasHitTarget()) {
-                Stoma stomaAtLocation = pathogen.getTarget();
-                
-                if(stomaAtLocation != null &&
-                    stomaAtLocation.isOpen()
-                ) {
-                    points -= pointCostPerPathogen;
-                }
-                
-                entitiesToRemove.add(pathogen);
-            } 
-        }
-        
-        pathogens.removeAll(entitiesToRemove);
-    }
-    
-    public int getPoints() {
-        return points;
+    public PointsManager pointsManager() {
+        return _pointsManager;
     }
     
     public int getWidthOfArena() {
@@ -222,8 +207,7 @@ public class GameState {
     final private RectangularArea stomataArea;
     final private RectangularArea pathogenSpawnArea;
     
-    // The number of points the player has earned
-    private int points = 0;
-    
     public boolean finished;
+    
+    private PointsManager _pointsManager;
 }
