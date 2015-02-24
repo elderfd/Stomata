@@ -21,4 +21,33 @@ public class RNG extends Random {
     public boolean bernoulliTrial(double probabilityOfSuccess) {
         return (nextDouble() < probabilityOfSuccess);
     }
+    
+    public double getNormalVariate(NormalDistribution distribution) {
+        return nextGaussian() * distribution.std() + distribution.mean();
+    }
+    
+    public int getBinomialVariate(BinomialDistribution distribution) {
+        int successes = 0;
+        
+        for(int i = 0; i < distribution.k(); i++) {
+            if(bernoulliTrial(distribution.p())) {
+                successes++;
+            }
+        }
+        
+        return successes;
+    }
+    
+    public int getPoissonVariate(PoissonDistribution distribution) {
+        int numberOfEvents = 0;
+        double target = Math.exp(-distribution.mean()); 
+        double productSoFar = 1;
+        
+        while(productSoFar > target) {
+            numberOfEvents ++;
+            productSoFar *= nextDouble();
+        }
+        
+        return numberOfEvents - 1;
+    }
 }

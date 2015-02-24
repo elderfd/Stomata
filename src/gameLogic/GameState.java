@@ -11,6 +11,8 @@ import utility.Location;
 import utility.RNG;
 import java.util.ArrayList;
 import java.util.Collections;
+import timeScaling.RatePerSecond;
+import utility.PoissonDistribution;
 import utility.RectangularArea;
 
 /**
@@ -117,32 +119,35 @@ public class GameState {
         }
         
         // Add new pathogens if we need to
-        for(int i = 0; i < PATHOGEN_SPAWN_EVENT_ATTEMPTS; i++) {
-            if(rng.bernoulliTrial(PATHOGEN_SPAWN_PROBABILITY)) {
+        int numberOfNewPathogens = rng.getPoissonVariate(pathogenSpawnDistribution);
+        
+        if(numberOfNewPathogens > 0) {
+            for(int i = 0; i < numberOfNewPathogens; i++) {
                 // Spawn the pathogen at a random location
                 Location spawnLocation = pathogenSpawnArea.getRandomLocationInArea(rng);
-                
+
                 // Target it at the stomata which is nearest horizontally
                 int bestDistance = -1;
                 Stoma target = null;
-                
+
                 for(Stoma stoma : stomata) {
                     int horizontalDistance = abs(stoma.getLocation().getX() - spawnLocation.getX());
-                    
+
                     if(bestDistance == -1 || horizontalDistance < bestDistance) {
                         bestDistance = horizontalDistance;
                         target = stoma;
                     }
                 }
-                
-                pathogens.add(new Pathogen(
-                    spawnLocation,
-                    target,
-                    rng
-                )
-        );
+
+                pathogens.add(
+                    new Pathogen(
+                        spawnLocation,
+                        target,
+                        rng
+                    )
+                );
             }
-        }
+        }   
         
         updatePoints();
     }
@@ -209,8 +214,10 @@ public class GameState {
     static final private int ARENA_NUM_COLS = 300;
     static final private int ARENA_NUM_ROWS = 225;
     static final private int NUM_STOMATA = 5;
-    static final private double PATHOGEN_SPAWN_PROBABILITY = 0.5;
-    static final private int PATHOGEN_SPAWN_EVENT_ATTEMPTS = 3;
+    static final private PoissonDistribution pathogenSpawnDistribution = 
+        new PoissonDistribution(
+            new RatePerSecond(4).toPerFrame().value()
+        );
     
     final private RectangularArea stomataArea;
     final private RectangularArea pathogenSpawnArea;
