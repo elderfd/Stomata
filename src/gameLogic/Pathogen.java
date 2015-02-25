@@ -26,6 +26,7 @@ package gameLogic;
 import gui.DrawableObject;
 import static java.lang.Math.abs;
 import timeScaling.RatePerSecond;
+import timeScaling.TimeInSeconds;
 import utility.Area;
 import utility.Location;
 import utility.RNG;
@@ -72,6 +73,10 @@ public class Pathogen implements DrawableObject {
         return height;
     }
     
+    public boolean finishedInfection() {
+        return _infected;
+    }
+    
     public boolean hasHitTarget() {
         return targetStoma.getHitBox().overlapsWith((RectangularArea)this.getHitBox());
     }
@@ -114,27 +119,12 @@ public class Pathogen implements DrawableObject {
                 newY -= dist;
             }
             
-            // Less erratic movement if at target height (also starts decaying)
             dist = speed;
 
             if(yDiff != 0) {
                 dist *= momentum.getEffect();
-                
-                // Bias towards the stomata
-//                int maxBias = 0;
-//
-//                if(maxBias > abs(xDiff)) {
-//                    maxBias = abs(xDiff);
-//                }
-                
-//                if(rng.bernoulliTrial(0.2)) {
-//                    if(xDiff < 0) {
-//                        dist -= maxBias;
-//                    } else if(xDiff > 0) {
-//                        dist += maxBias;
-//                    }
-//                }  
             } else {
+                // Tracks sidewards to target (and starts decaying!)
                 hasLanded = true;
                 
                 if(xDiff < 0) {
@@ -146,6 +136,14 @@ public class Pathogen implements DrawableObject {
             
             currentLocation.setX(newX);
             currentLocation.setY(newY);
+        } else {
+            timeSinceAttemptedInfectionStart.setValue(
+                timeSinceAttemptedInfectionStart.value() + TimeInSeconds.timeForOneFrame().value()
+            );
+            
+            if(timeSinceAttemptedInfectionStart.value() >= timeToInfect.value()) {
+                _infected = true;
+            }
         }
     }
     
@@ -160,6 +158,8 @@ public class Pathogen implements DrawableObject {
     
     private String spriteID = "pathogen";
  
+    private boolean _infected = false;
+    
     // Describes the bias in the movement of the pathogen
     // Should get runs from left to right
     private class Momentum {
@@ -207,4 +207,10 @@ public class Pathogen implements DrawableObject {
     private RatePerSecond decayProbability = new RatePerSecond(0.4);
     
     protected Location currentLocation;
+    
+    // The amount of time it takes a pathogen to infect a stoma once it has reached it
+    static private TimeInSeconds timeToInfect = new TimeInSeconds(2.5);
+    
+    // How long since this pathogen started an attempted infection
+    private TimeInSeconds timeSinceAttemptedInfectionStart = new TimeInSeconds(0);
 }

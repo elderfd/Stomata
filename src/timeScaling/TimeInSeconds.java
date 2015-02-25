@@ -40,6 +40,10 @@ public class TimeInSeconds {
         return _value;
     }
     
+    public static TimeInSeconds timeForOneFrame() {
+        return new TimeInFrames(1).toTimeInSeconds();
+    }
+    
     public TimeInFrames toTimeInFrames() {
         return new TimeInFrames(TimeScaler.secondsToFrames(_value));
     }

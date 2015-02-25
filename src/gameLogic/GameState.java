@@ -169,7 +169,7 @@ public class GameState {
             } 
             
             // Check for collision with target
-            if(pathogen.hasHitTarget()) {
+            if(pathogen.finishedInfection()) {
                 indicesToRemove.add(counter);
                 
                 // Only points lost if the stoma is open
