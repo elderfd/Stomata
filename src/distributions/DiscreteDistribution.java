@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2015 James Elderfield.
@@ -21,20 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package utility;
+package distributions;
+
+import utility.RNG;
 
 /**
  *
  * @author James Elderfield
  */
-public class PoissonDistribution {
-    public PoissonDistribution(double mean) {
-        _mean = mean;
-    }
-    
-    public double mean() {
-        return _mean;
-    }
-    
-    double _mean;
+public interface DiscreteDistribution {
+    public int getVariate(RNG rng);
 }

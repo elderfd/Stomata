@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2015 James Elderfield.
@@ -21,28 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package utility;
-
-import static java.lang.Math.ceil;
+package functionalInterfaces;
 
 /**
  *
  * @author James Elderfield
  */
-public class BinomialDistribution {
-    public BinomialDistribution(double p, int k) {
-        _p = p;
-        _k = k;
-    }
-    
-    public double p() {
-        return _p;
-    }
-    
-    public int k() {
-        return _k;
-    }
-    
-    int _k;
-    double _p;
+@FunctionalInterface
+public interface TriConsumer <T, U, S> {
+    void accept(T t, U u, S s);
 }

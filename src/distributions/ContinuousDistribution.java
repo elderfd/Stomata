@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2015 James Elderfield.
@@ -21,25 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package utility;
+package distributions;
 
-import distributions.PoissonDistribution;
-import distributions.NormalDistribution;
-import distributions.BinomialDistribution;
-import java.util.Random;
+import utility.RNG;
 
 /**
  *
  * @author James Elderfield
  */
-public class RNG extends Random {
-    public int uniformIntInRange(int min, int max) {
-        int rNum = nextInt(max - min);
-        
-        return rNum + min;
-    }
-    
-    public boolean bernoulliTrial(double probabilityOfSuccess) {
-        return (nextDouble() < probabilityOfSuccess);
-    }
+public interface ContinuousDistribution {
+    public double getVariate(RNG rng);
 }

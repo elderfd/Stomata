@@ -23,15 +23,19 @@
  */
 package gameLogic;
 
+import distributions.ArbitraryDiscreteDistribution;
+import distributions.DiscreteDistribution;
+import functionalInterfaces.TriConsumer;
 import gui.DrawableObject;
 import static java.lang.Math.abs;
 import utility.Location;
 import utility.RNG;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.function.Predicate;
 import timeScaling.RatePerFrame;
 import timeScaling.RatePerSecond;
-import utility.PoissonDistribution;
+import java.util.HashMap;
 import utility.RectangularArea;
 
 /**
@@ -89,6 +93,7 @@ public class GameState {
         pathogens.clear();
         populateRandomStomata();
         finished = false;
+        timeInHours = 0;
         
         _pointsManager.reset();
     }
@@ -119,8 +124,7 @@ public class GameState {
         
         double sunrise = 6;
         double sunset = 21;
-        double timeToSetOrRise = 2;
-        double midday = sunrise + (sunset - sunrise) / 2; 
+        double timeToSetOrRise = 2; 
         
         // Should be dark at night
         if(timeInDay() < sunrise || timeInDay() > sunset) {
@@ -184,7 +188,7 @@ public class GameState {
         }
         
         // Add new pathogens if we need to
-        int numberOfNewPathogens = rng.getPoissonVariate(pathogenSpawnDistribution);
+        int numberOfNewPathogens = pathogenSpawnDistribution.getVariate(rng);
         
         if(numberOfNewPathogens > 0) {
             for(int i = 0; i < numberOfNewPathogens; i++) {
@@ -224,7 +228,30 @@ public class GameState {
     private void populateRandomStomata() {
         stomata.clear();
         
+        // TODO: Stop them from overlapping
+        
         ArrayList<Location> randomLocations = stomataArea.getUniqueListOfRandomLocations(NUM_STOMATA, rng);
+        
+        for(int i = 0; i < NUM_STOMATA; i++) {
+            Location randomLocation = stomataArea.getRandomLocationInArea(rng);
+            
+            Predicate<Stoma> haveCreatedOverlap = (Stoma newStoma) -> {
+                for(Stoma stoma : stomata) {
+                    if(newStoma.getHitBox().overlapsWith((RectangularArea)stoma.getHitBox())) {
+                        stomata.remove(newStoma);
+                        return true;
+                    }
+                }
+                
+                return false;
+            };
+            
+            // Try adding a stomata until we find a place where it doesn't overlap
+            do {
+                stomata.add(new Stoma(randomLocation));
+            } while(!haveCreatedOverlap.test(stomata.get(stomata.size() - 1)));
+            
+        }
         
         for(Location location : randomLocations) {
             stomata.add(new Stoma(location));
@@ -252,9 +279,26 @@ public class GameState {
     static final private int ARENA_NUM_COLS = 300;
     static final private int ARENA_NUM_ROWS = 225;
     static final private int NUM_STOMATA = 5;
-    static final private PoissonDistribution pathogenSpawnDistribution = 
-        new PoissonDistribution(
-            new RatePerSecond(4).toPerFrame().value()
+    static final private DiscreteDistribution pathogenSpawnDistribution = 
+        new ArbitraryDiscreteDistribution(
+            new HashMap<Integer, Double>(){{
+                Double totalProbability = 0.0;
+                
+                TriConsumer<Integer, RatePerSecond, Double> addRate =
+                    (Integer value, RatePerSecond probabilityPerSecond, Double total) -> {
+                        RatePerFrame probabilityPerFrame = probabilityPerSecond.toPerFrame();
+
+                        total += probabilityPerFrame.value();
+                        put(value, probabilityPerFrame.value());
+                    };
+                
+                addRate.accept(10, new RatePerSecond(0.05), totalProbability);
+                addRate.accept(5, new RatePerSecond(0.1), totalProbability);
+                addRate.accept(1, new RatePerSecond(0.5), totalProbability);
+                        
+                // Rest of probability should be 0
+                put(0, 1 - totalProbability);
+            }}
         );
     
     final private RectangularArea stomataArea;

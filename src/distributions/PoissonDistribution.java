@@ -21,25 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package utility;
+package distributions;
 
-import distributions.PoissonDistribution;
-import distributions.NormalDistribution;
-import distributions.BinomialDistribution;
-import java.util.Random;
+import utility.RNG;
 
 /**
  *
  * @author James Elderfield
  */
-public class RNG extends Random {
-    public int uniformIntInRange(int min, int max) {
-        int rNum = nextInt(max - min);
-        
-        return rNum + min;
+public class PoissonDistribution implements DiscreteDistribution {
+    public PoissonDistribution(double mean) {
+        _mean = mean;
     }
     
-    public boolean bernoulliTrial(double probabilityOfSuccess) {
-        return (nextDouble() < probabilityOfSuccess);
+    public double mean() {
+        return _mean;
     }
+    
+    @Override
+    public int getVariate(RNG rng) {
+        int numberOfEvents = 0;
+        double target = Math.exp(-_mean); 
+        double productSoFar = 1;
+        
+        while(productSoFar > target) {
+            numberOfEvents ++;
+            productSoFar *= rng.nextDouble();
+        }
+        
+        return numberOfEvents - 1;
+    }
+    
+    double _mean;
 }

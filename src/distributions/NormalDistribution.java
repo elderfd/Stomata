@@ -21,13 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package utility;
+package distributions;
+
+import utility.RNG;
 
 /**
  *
  * @author James Elderfield
  */
-public class NormalDistribution {
+public class NormalDistribution implements ContinuousDistribution {
     public NormalDistribution(double mean, double std) {
         _mean = mean;
         _std = std;
@@ -39,6 +41,11 @@ public class NormalDistribution {
     
     public double std() {
         return _std;
+    }
+    
+    @Override
+    public double getVariate(RNG rng) {
+        return rng.nextGaussian() * _std + _mean;
     }
     
     private double _mean;
