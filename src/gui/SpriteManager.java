@@ -71,6 +71,8 @@ public class SpriteManager {
         addIDFileNamePair.accept("stomaClosed", "stomaClosed.png");
         addIDFileNamePair.accept("background", "background.jpg");
         addIDFileNamePair.accept("pathogen", "EvileSpore.png");
+        addIDFileNamePair.accept("dustCloud", placeholderFileName);
+        addIDFileNamePair.accept("pathogenInfection", placeholderFileName);
         
         String imageFolderName = "images/";
         

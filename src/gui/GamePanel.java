@@ -127,6 +127,22 @@ public class GamePanel extends JPanel {
             );
         }
         
+        // Add some effects
+        for(VisualEffect effect : state.getVisualEffects()) {
+            Location screenLocation = coordTransform().gameWorldToScreen(effect.getLocation());
+            
+            g2d.drawImage(
+                spriteManager.getSpriteImage(effect.getSpriteID()),
+                screenLocation.getX(),
+                screenLocation.getY(),
+                coordTransform().gameWidthToScreenWidth(effect.getWidth()),
+                coordTransform().gameHeightToScreenHeight(effect.getHeight()),
+                this
+            );
+        }
+        
+        state.updateEffects();
+        
         // Add lighting effects
         g2d.setColor(lightingColor);
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());

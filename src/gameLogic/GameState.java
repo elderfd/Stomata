@@ -27,6 +27,9 @@ import distributions.ArbitraryDiscreteDistribution;
 import distributions.DiscreteDistribution;
 import functionalInterfaces.TriConsumer;
 import gui.DrawableObject;
+import gui.PathogenDustCloud;
+import gui.PathogenInfectionEvent;
+import gui.VisualEffect;
 import static java.lang.Math.abs;
 import utility.Location;
 import utility.RNG;
@@ -87,6 +90,14 @@ public class GameState {
         }
         
         return returnList;
+    }
+    
+    public ArrayList<VisualEffect> getVisualEffects() {
+        return effects;
+    }
+    
+    public void updateEffects() {
+        effects.removeIf((effect) -> effect.checkExpiration());
     }
     
     public void reset() {
@@ -155,6 +166,10 @@ public class GameState {
         return null;
     }
     
+    public void addVisualEffect(VisualEffect effect) {
+        effects.add(effect);
+    }
+    
     public void updateGameState () {        
         // Move existing pathogens
         ArrayList<Integer> indicesToRemove = new ArrayList<>();
@@ -164,6 +179,7 @@ public class GameState {
             // Test for removal
             if(pathogen.shouldDie(rng)) {
                 indicesToRemove.add(counter);
+                addVisualEffect(new PathogenDustCloud(pathogen.getLocation()));
             } else {
                 pathogen.updateLocation(rng);
             } 
@@ -175,6 +191,9 @@ public class GameState {
                 // Only points lost if the stoma is open
                 if(pathogen.getTarget().isOpen()) {
                     _pointsManager.infectionEvent();
+                    addVisualEffect(new PathogenInfectionEvent(pathogen.getLocation()));
+                } else {
+                    addVisualEffect(new PathogenDustCloud(pathogen.getLocation()));
                 }
             }
             
@@ -310,4 +329,5 @@ public class GameState {
     public RatePerFrame timeIncreaseRate = new RatePerSecond(2).toPerFrame();
     
     private PointsManager _pointsManager;
+    private ArrayList<VisualEffect> effects = new ArrayList<>();
 }
