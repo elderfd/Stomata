@@ -104,7 +104,7 @@ public class GameState {
         pathogens.clear();
         populateRandomStomata();
         finished = false;
-        timeInHours = 0;
+        _timeInHours = 0;
         
         _pointsManager.reset();
     }
@@ -127,7 +127,7 @@ public class GameState {
     }
     
     public double timeInDay() {
-        return timeInHours % 24;
+        return _timeInHours % 24;
     }
     
     public double getBrightnessFactor() {
@@ -240,7 +240,7 @@ public class GameState {
         _pointsManager.tick();
         
         // Increase the time
-        timeInHours += timeIncreaseRate.value();
+        _timeInHours += timeIncreaseRate.value();
     }
     
     // Populates the arena randomly with stomata
@@ -289,6 +289,10 @@ public class GameState {
         return ARENA_NUM_ROWS;
     }
     
+    public int timeInHours() {
+        return _timeInHours;
+    }
+    
     private ArrayList<Stoma> stomata;
     private ArrayList<Pathogen> pathogens;
     
@@ -325,7 +329,7 @@ public class GameState {
     
     public boolean finished;
     
-    public double timeInHours = 0;
+    public double _timeInHours = 0;
     public RatePerFrame timeIncreaseRate = new RatePerSecond(2).toPerFrame();
     
     private PointsManager _pointsManager;

@@ -73,6 +73,20 @@ public class GamePanel extends JPanel {
         return state.getWidthOfArena();
     }
  
+    public Location getSunLocation() {
+        int hour = state.timeInHours();
+        
+        Location loc;
+        
+        if(hour < 6 || hour > 21) {
+            loc = null;
+        } else {
+            double x = hour / (21) ;
+        }
+        
+        return loc;
+    }
+    
     public void calculateLightingColor() {
         double brightnessFactor = state.getBrightnessFactor();
         
