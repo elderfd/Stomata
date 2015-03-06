@@ -45,7 +45,7 @@ public class PointsManager {
     
     public void tick() {
         // Interrogate the state to work out how many points to add
-        double brightness = _state.getBrightnessFactor();
+        double brightness = _state.lightManager().getBrightnessFactor();
         
         for(Stoma stoma : _state.getStomata()) {
             if(stoma.isOpen()) {

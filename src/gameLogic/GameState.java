@@ -130,32 +130,6 @@ public class GameState {
         return _timeInHours % 24;
     }
     
-    public double getBrightnessFactor() {
-        double brightnessFactor;
-        
-        double sunrise = 6;
-        double sunset = 21;
-        double timeToSetOrRise = 2; 
-        
-        // Should be dark at night
-        if(timeInDay() < sunrise || timeInDay() > sunset) {
-            brightnessFactor = 0;
-        } else {
-            double timeFromSunrise = timeInDay() - sunrise;
-            double timeFromSunset = sunset - timeInDay();
-            
-            if(timeFromSunrise < timeToSetOrRise) {
-                brightnessFactor = timeFromSunrise / timeToSetOrRise;
-            } else if(timeFromSunset < timeToSetOrRise) {
-                brightnessFactor = timeFromSunset / timeToSetOrRise;
-            } else {
-                brightnessFactor = 1;
-            }
-        }
-        
-        return brightnessFactor;
-    }
-    
     public Stoma getStomaAtLocation(Location location) {
         for(Stoma stoma : stomata) {
             if(stoma.getHitBox().containsLocation(location)) {
@@ -289,7 +263,7 @@ public class GameState {
         return ARENA_NUM_ROWS;
     }
     
-    public int timeInHours() {
+    public double timeInHours() {
         return _timeInHours;
     }
     
@@ -324,6 +298,10 @@ public class GameState {
             }}
         );
     
+    public LightManager lightManager() {
+        return _lightMangager;
+    }
+    
     final private RectangularArea stomataArea;
     final private RectangularArea pathogenSpawnArea;
     
@@ -334,4 +312,6 @@ public class GameState {
     
     private PointsManager _pointsManager;
     private ArrayList<VisualEffect> effects = new ArrayList<>();
+    
+    private LightManager _lightMangager = new LightManager(this);
 }

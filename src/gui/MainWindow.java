@@ -23,8 +23,11 @@
  */
 package gui;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import gameLogic.GameState;
 import java.awt.CardLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -53,10 +56,19 @@ public class MainWindow{
         window.setTitle("Test");
         
         renderPanel = new GamePanel(state, this);
-        mainMenu = new MainMenu(this);
+        _mainMenu = new MainMenu(this);
         
-        windowPanel.add(mainMenu, MAIN_MENU_IDENTIFIER);
+        windowPanel.add(_mainMenu, MAIN_MENU_IDENTIFIER);
         windowPanel.add(renderPanel, GAME_PANEL_IDENTIFIER);
+        
+        window.addWindowListener(
+            new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    _mainMenu.saveState();
+                }
+            }
+        );
         
         window.setVisible(true);
     }
@@ -77,9 +89,13 @@ public class MainWindow{
         layout.show(windowPanel, MAIN_MENU_IDENTIFIER);
     }
     
+    public MainMenu mainMenu() {
+        return _mainMenu;
+    }
+    
     private JFrame window;
     private GamePanel renderPanel;
-    private MainMenu mainMenu;
+    private MainMenu _mainMenu;
     private JPanel windowPanel;
     
     private final String GAME_PANEL_IDENTIFIER = "GAMEBOARD";

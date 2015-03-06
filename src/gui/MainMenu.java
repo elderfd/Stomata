@@ -23,15 +23,24 @@
  */
 package gui;
 
+import gui.HighScoreManager.ScorePair;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -41,6 +50,10 @@ public class MainMenu extends JPanel {
     MainMenu (MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         init();
+    }
+    
+    public void saveState() {
+        highScoreManager.saveScoresToFile(highScoreFileName);
     }
     
     private void init() {
@@ -64,13 +77,99 @@ public class MainMenu extends JPanel {
         topScoresLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
         
         this.add(Box.createVerticalGlue());
+        this.add(Box.createRigidArea(new Dimension(0,50)));
         this.add(playButton);
         this.add(Box.createRigidArea(new Dimension(0,50)));
         this.add(topScoresLabel);
-        this.add(Box.createVerticalGlue());
+        this.add(topScoresArea);
+        
+        highScoreManager.updateFromFile(highScoreFileName);
+        populateHighScores();
+    }
+    
+    public void populateHighScores() {
+        int numberExpected = 10;
+        
+        List<ScorePair> highScores = highScoreManager.getTopNScores(numberExpected);
+        
+        topScoresArea.removeAll();
+        topScoresArea.setLayout(new GridBagLayout());
+        
+        GridBagConstraints nameConstraints = new GridBagConstraints();
+        nameConstraints.gridx = 0;
+        nameConstraints.fill = GridBagConstraints.HORIZONTAL;
+        nameConstraints.weightx = 0;
+        nameConstraints.ipadx = 25;
+        nameConstraints.anchor = GridBagConstraints.NORTH;
+        nameConstraints.weighty = 1;
+        
+        GridBagConstraints scoreConstraints = new GridBagConstraints();
+        scoreConstraints.gridx = 1;
+        scoreConstraints.fill = GridBagConstraints.HORIZONTAL;
+        scoreConstraints.weightx = 0;
+        scoreConstraints.ipadx = 25;
+        scoreConstraints.anchor = GridBagConstraints.NORTH;
+        scoreConstraints.weighty = 1;
+        
+        int rowCounter = 0;
+        
+        for(ScorePair scorePair : highScores) {
+            nameConstraints.gridy = scoreConstraints.gridy = rowCounter;
+            
+            JLabel nameLabel = new JLabel(scorePair.playerName);
+            nameLabel.setVerticalAlignment(SwingConstants.TOP);
+            
+            JLabel scoreLabel = new JLabel(String.valueOf(scorePair.score));
+            scoreLabel.setVerticalAlignment(SwingConstants.TOP);
+            
+            topScoresArea.add(nameLabel, nameConstraints);
+            topScoresArea.add(scoreLabel, scoreConstraints);
+            
+            rowCounter++;
+        }
+        
+        // Fill the gaps
+        String dummyName = "";
+        String dummyScore = "";
+        
+        while(rowCounter < numberExpected) {
+            nameConstraints.gridy = scoreConstraints.gridy = rowCounter;
+            
+            JLabel nameLabel = new JLabel(dummyName);
+            nameLabel.setVerticalAlignment(SwingConstants.TOP);
+            
+            JLabel scoreLabel = new JLabel(dummyScore);
+            scoreLabel.setVerticalAlignment(SwingConstants.TOP);
+            
+            topScoresArea.add(nameLabel, nameConstraints);
+            topScoresArea.add(scoreLabel, scoreConstraints);
+            
+            rowCounter++;
+        }
+        
+        this.add(topScoresArea);
+        this.revalidate();
+        this.repaint();
+    }
+    
+    public void askToRecordScore(double score) {
+        String playerName = JOptionPane.showInputDialog(
+            this,
+            "Enter name to record score",
+            "Player name",
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if(!playerName.isEmpty()) {
+            highScoreManager.addScore(highScoreManager.new ScorePair(playerName, score));
+            populateHighScores();
+        }
     }
     
     private JButton playButton;
     private JLabel topScoresLabel;
+    private JPanel topScoresArea = new JPanel();
     private MainWindow mainWindow;
+    static private String highScoreFileName = "highScores.json";
+    private HighScoreManager highScoreManager = new HighScoreManager(highScoreFileName);
 }

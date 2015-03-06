@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import utility.Location;
@@ -63,6 +64,10 @@ public class GamePanel extends JPanel {
             workThread.cancel();
         }
         mainWindow.showMainMenu();
+        
+        if(state.finished) {
+            mainWindow.mainMenu().askToRecordScore(state.pointsManager().points());
+        }
     }
     
     public int getArenaHeight() {
@@ -72,23 +77,9 @@ public class GamePanel extends JPanel {
     public int getArenaWidth() {
         return state.getWidthOfArena();
     }
- 
-    public Location getSunLocation() {
-        int hour = state.timeInHours();
-        
-        Location loc;
-        
-        if(hour < 6 || hour > 21) {
-            loc = null;
-        } else {
-            double x = hour / (21) ;
-        }
-        
-        return loc;
-    }
     
     public void calculateLightingColor() {
-        double brightnessFactor = state.getBrightnessFactor();
+        double brightnessFactor = state.lightManager().getBrightnessFactor();
         
         // Produce a properly scaled lighting color
         int red = 0, green = 0, blue = 0;
@@ -126,6 +117,14 @@ public class GamePanel extends JPanel {
             this.getHeight(),
             this
         );
+        
+        // Draw on a sun
+        Location sunLocation = state.lightManager().getSunLocation(this);
+        
+        if(sunLocation != null) {
+            g2d.setColor(Color.yellow);
+            g2d.fillOval(sunLocation.getX() - 50, sunLocation.getY() - 50, 100, 100);
+        }
         
         // Then draw out all of the objects
         for(DrawableObject object : everythingToDraw) {
@@ -191,7 +190,7 @@ public class GamePanel extends JPanel {
             g2d.setColor(Color.GREEN);
             String brightnessLabel = "Brightness: " + String.format (
                 "%.2f",
-                state.getBrightnessFactor()
+                state.lightManager().getBrightnessFactor()
             );
             
             g2d.drawString(brightnessLabel, labelX, labelY + 30);
