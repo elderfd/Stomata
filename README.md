@@ -8,3 +8,6 @@ Science out-reach game. You take control of the stomata (variable-width pores) o
 * Close/open stomata by clicking on them.
 * Pathogens rain down from the sky and try to attack the stomata.
 * Try to get as many points as possible in a minute!
+
+## Extra Information
+This was produced in collaboration with other members of the [Epidemiology and Modelling](http://www.plantsci.cam.ac.uk/research/chrisgilligan) and [Theoretical and Computational Epidemiology](http://www.plantsci.cam.ac.uk/research/nikcunniffe) groups in the Department of Plant Sciences, University of Cambridge. It was designed for the [Cambridge Science Festival 2015](http://www.sciencefestival.cam.ac.uk/2015-cambridge-science-festival). 
