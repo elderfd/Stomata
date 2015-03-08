@@ -24,16 +24,22 @@
 package gui;
 
 import gui.HighScoreManager.ScorePair;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import javax.swing.BorderFactory;
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -59,11 +65,41 @@ public class MainMenu extends JPanel {
     private void init() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
+        JPanel titleLabel = new JPanel() {
+            JPanel loadImage() {
+                try {
+                    image = ImageIO.read(new File("images/title.png"));
+                } catch(IOException e) {
+                    // Shouldn't happen meh, hard crash
+                    System.exit(1);
+                }
+                
+                return this;
+            }
+            
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                
+                Graphics2D g2d = (Graphics2D) g;
+                
+                g2d.setColor(Color.black);
+                g2d.drawRect(0, 0, this.getWidth(), this.getHeight());
+                g2d.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);         
+            }
+            
+            Image image;
+        }.loadImage();
+        
         playButton = new JButton("Play");
         topScoresLabel = new JLabel("Top Scores");
         
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         playButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+        playButton.setBackground(Color.black);
+        playButton.setFocusPainted(false);
+        playButton.setForeground(cambridgeBlue);
+        playButton.setFont(playButton.getFont().deriveFont(30f));
         
         playButton.addActionListener(new ActionListener() {
             @Override
@@ -75,16 +111,24 @@ public class MainMenu extends JPanel {
         
         topScoresLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         topScoresLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        topScoresLabel.setFont(topScoresLabel.getFont().deriveFont(30f));
+        topScoresLabel.setForeground(cambridgeBlue);
+        
+        topScoresArea.setBackground(Color.black);
         
         this.add(Box.createVerticalGlue());
-        this.add(Box.createRigidArea(new Dimension(0,50)));
+        this.add(titleLabel);
+        this.add(Box.createRigidArea(new Dimension(0,25)));
         this.add(playButton);
-        this.add(Box.createRigidArea(new Dimension(0,50)));
+        this.add(Box.createRigidArea(new Dimension(0,25)));
         this.add(topScoresLabel);
         this.add(topScoresArea);
         
         highScoreManager.updateFromFile(highScoreFileName);
         populateHighScores();
+        
+        titleLabel.setPreferredSize(new Dimension(1000, 406));
+        this.setBackground(Color.black);
     }
     
     public void populateHighScores() {
@@ -113,14 +157,20 @@ public class MainMenu extends JPanel {
         
         int rowCounter = 0;
         
+        Font fontToUse = playButton.getFont().deriveFont(20f);
+        
         for(ScorePair scorePair : highScores) {
             nameConstraints.gridy = scoreConstraints.gridy = rowCounter;
             
             JLabel nameLabel = new JLabel(scorePair.playerName);
             nameLabel.setVerticalAlignment(SwingConstants.TOP);
+            nameLabel.setFont(fontToUse);
+            nameLabel.setForeground(cambridgeBlue);
             
             JLabel scoreLabel = new JLabel(String.valueOf(scorePair.score));
             scoreLabel.setVerticalAlignment(SwingConstants.TOP);
+            scoreLabel.setFont(fontToUse);
+            scoreLabel.setForeground(cambridgeBlue);
             
             topScoresArea.add(nameLabel, nameConstraints);
             topScoresArea.add(scoreLabel, scoreConstraints);
@@ -165,6 +215,8 @@ public class MainMenu extends JPanel {
             populateHighScores();
         }
     }
+ 
+    Color cambridgeBlue = new Color(166, 211, 200);
     
     private JButton playButton;
     private JLabel topScoresLabel;
