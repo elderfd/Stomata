@@ -219,33 +219,23 @@ public class GameState {
     private void populateRandomStomata() {
         stomata.clear();
         
-        // TODO: Stop them from overlapping
-        
-        ArrayList<Location> randomLocations = stomataArea.getUniqueListOfRandomLocations(NUM_STOMATA, rng);
+        Predicate<Stoma> haveCreatedOverlap = (Stoma newStoma) -> {
+            for(Stoma stoma : stomata) {
+                if(newStoma != stoma && newStoma.getHitBox().overlapsWith((RectangularArea)stoma.getHitBox())) {
+                    stomata.remove(newStoma);
+                    return true;
+                }
+            }
+
+            return false;
+        };
         
         for(int i = 0; i < NUM_STOMATA; i++) {
-            Location randomLocation = stomataArea.getRandomLocationInArea(rng);
-            
-            Predicate<Stoma> haveCreatedOverlap = (Stoma newStoma) -> {
-                for(Stoma stoma : stomata) {
-                    if(newStoma.getHitBox().overlapsWith((RectangularArea)stoma.getHitBox())) {
-                        stomata.remove(newStoma);
-                        return true;
-                    }
-                }
-                
-                return false;
-            };
-            
             // Try adding a stomata until we find a place where it doesn't overlap
             do {
+                Location randomLocation = stomataArea.getRandomLocationInArea(rng);
                 stomata.add(new Stoma(randomLocation));
-            } while(!haveCreatedOverlap.test(stomata.get(stomata.size() - 1)));
-            
-        }
-        
-        for(Location location : randomLocations) {
-            stomata.add(new Stoma(location));
+            } while(haveCreatedOverlap.test(stomata.get(stomata.size() - 1)));
         }
     }
     

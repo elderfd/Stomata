@@ -32,8 +32,8 @@ import java.util.ArrayList;
 public class RectangularArea implements Area {
     public RectangularArea(Location upperLeft, int width, int height) {
         this.upperLeft = upperLeft;
-        this.width = width;
-        this.height = height;
+        this._width = width;
+        this._height = height;
     }
     
     public Location getUpperLeft() {
@@ -42,21 +42,19 @@ public class RectangularArea implements Area {
     
     @Override
     public Location getRandomLocationInArea(RNG rng) {
-        int x = rng.uniformIntInRange(upperLeft.getX(), upperLeft.getX() + width);
-        int y = rng.uniformIntInRange(upperLeft.getY(), upperLeft.getY() + height);
+        int x = rng.uniformIntInRange(upperLeft.getX(), upperLeft.getX() + _width);
+        int y = rng.uniformIntInRange(upperLeft.getY(), upperLeft.getY() + _height);
         
         return new Location(x, y);
     }
     
     @Override
     public ArrayList<Location> getUniqueListOfRandomLocations(int numberOfLocations, RNG rng) {
-        // TODO: Probably worth changing this algorithm for something more efficient
-        
         ArrayList<Location> returnList = new ArrayList();
         ArrayList<Location> locationsStillAvailable = new ArrayList<>();
         
-        for(int x = upperLeft.getX(); x < upperLeft.getX() + width; x++) {
-            for(int y = upperLeft.getY(); y < upperLeft.getY() + height; y++) {
+        for(int x = upperLeft.getX(); x < upperLeft.getX() + _width; x++) {
+            for(int y = upperLeft.getY(); y < upperLeft.getY() + _height; y++) {
                 locationsStillAvailable.add(new Location(x, y));
             }
         }
@@ -74,30 +72,36 @@ public class RectangularArea implements Area {
     @Override
     public boolean containsLocation(Location location) {
         return location.getX() > upperLeft.getX() &&
-                location.getX() < upperLeft.getX() + width &&
+                location.getX() < upperLeft.getX() + _width &&
                 location.getY() > upperLeft.getY() &&
-                location.getY() < upperLeft.getY() + height;
+                location.getY() < upperLeft.getY() + _height;
     }
     
     @Override
     public Location getCentroid() {
-        int x = upperLeft.getX() + width / 2;
-        int y = upperLeft.getY() + height / 2;
+        int x = upperLeft.getX() + _width / 2;
+        int y = upperLeft.getY() + _height / 2;
         
         return new Location(x, y);
     }
     
-    // TODO: Would be good to implement overlap checking with any type of area
     @Override
     public boolean overlapsWith (RectangularArea other) {
-        return !(upperLeft.getX() > other.upperLeft.getX() + other.width
-                || upperLeft.getX() + width < other.upperLeft.getX())
-                && !(upperLeft.getY() > other.upperLeft.getY() + other.height
-                || upperLeft.getY() + height < other.upperLeft.getY());
+        return !(upperLeft.getX() > other.upperLeft.getX() + other._width
+                || upperLeft.getX() + _width < other.upperLeft.getX())
+                && !(upperLeft.getY() > other.upperLeft.getY() + other._height
+                || upperLeft.getY() + _height < other.upperLeft.getY());
     }
     
+    public int width() {
+        return _width;
+    }
+    
+    public int height() {
+        return _height;
+    }
     
     private Location upperLeft;
-    private int width;
-    private int height;
+    private int _width;
+    private int _height;
 }

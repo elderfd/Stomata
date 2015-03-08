@@ -30,10 +30,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import static java.lang.Math.abs;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import utility.Location;
+import utility.RectangularArea;
 
 /**
  *
@@ -137,6 +137,16 @@ public class GamePanel extends JPanel {
                 coordTransform().gameWidthToScreenWidth(object.getWidth()),
                 coordTransform().gameHeightToScreenHeight(object.getHeight()),
                 this
+            );
+            
+            // Draw hitboxes for debug
+            RectangularArea area = (RectangularArea)object.getHitBox();
+            g2d.setColor(Color.black);
+            g2d.drawRect(
+                    coordTransform().gameWidthToScreenWidth(area.getUpperLeft().getX()),
+                    coordTransform().gameHeightToScreenHeight(area.getUpperLeft().getY()),
+                    coordTransform().gameWidthToScreenWidth(area.width()),
+                    coordTransform().gameHeightToScreenHeight(area.height())
             );
         }
         

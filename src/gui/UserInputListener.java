@@ -65,7 +65,6 @@ public class UserInputListener implements MouseListener, KeyListener {
     public void mousePressed(MouseEvent e) {
         if(e.getButton() == BUTTON1) {
             leftMouseClicked = true;
-            // TODO: Need to check if these match up (not convinced)
             leftMouseClickLocation = getLocationFromMouseEvent(e);
         } else if(e.getButton() == BUTTON2) {
             rightMouseClicked = true;

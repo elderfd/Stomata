@@ -100,9 +100,7 @@ public class SpriteManager {
         try {
             retImage = nameToSpriteMap.get(spriteID).getImage();
         } catch(Exception e) {
-            // Should never happen
-            // TODO: Better error handling here
-            
+            // Should never happen            
             System.exit(1);
         }
         
