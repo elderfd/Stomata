@@ -78,8 +78,6 @@ public class GameState {
     public ArrayList<DrawableObject> getAllDrawableObjects() {
         ArrayList<DrawableObject> returnList = new ArrayList<>();
         
-        // TODO: Add all the other things to draw
-        
         for(Stoma stoma : stomata) {
             returnList.add(stoma);
         }
@@ -308,7 +306,7 @@ public class GameState {
     public boolean finished;
     
     public double _timeInHours = 0;
-    public RatePerFrame timeIncreaseRate = new RatePerSecond(2).toPerFrame();
+    public RatePerFrame timeIncreaseRate = new RatePerSecond(2.5).toPerFrame();
     
     private PointsManager _pointsManager;
     private ArrayList<VisualEffect> effects = new ArrayList<>();

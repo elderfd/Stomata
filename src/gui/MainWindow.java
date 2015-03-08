@@ -23,7 +23,6 @@
  */
 package gui;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import gameLogic.GameState;
 import java.awt.CardLayout;
 import java.awt.event.WindowAdapter;
@@ -43,7 +42,6 @@ public class MainWindow{
     private void initGUI() {
         window = new JFrame();
         
-        // TODO: This will live elsewhere later, just here for test
         GameState state = new GameState();
         
         windowPanel = new JPanel(new CardLayout());
@@ -53,7 +51,7 @@ public class MainWindow{
         window.setSize(1000, 750);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
-        window.setTitle("Test");
+        window.setTitle("Stomata!");
         
         renderPanel = new GamePanel(state, this);
         _mainMenu = new MainMenu(this);

@@ -183,19 +183,6 @@ public class GamePanel extends JPanel {
         
         g2d.drawString(timeLabel, labelX, labelY);
         
-        labelY += ySkip;
-        
-        // For debugging
-        if(true) {
-            g2d.setColor(Color.GREEN);
-            String brightnessLabel = "Brightness: " + String.format (
-                "%.2f",
-                state.lightManager().getBrightnessFactor()
-            );
-            
-            g2d.drawString(brightnessLabel, labelX, labelY + 30);
-        }
-        
         // Game is finished then present a message saying so
         if(state.finished) {
             String finishedLabel = "Game finished. Press ESC to continue.";
