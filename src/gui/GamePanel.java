@@ -138,16 +138,6 @@ public class GamePanel extends JPanel {
                 coordTransform().gameHeightToScreenHeight(object.getHeight()),
                 this
             );
-            
-            // Draw hitboxes for debug
-            RectangularArea area = (RectangularArea)object.getHitBox();
-            g2d.setColor(Color.black);
-            g2d.drawRect(
-                    coordTransform().gameWidthToScreenWidth(area.getUpperLeft().getX()),
-                    coordTransform().gameHeightToScreenHeight(area.getUpperLeft().getY()),
-                    coordTransform().gameWidthToScreenWidth(area.width()),
-                    coordTransform().gameHeightToScreenHeight(area.height())
-            );
         }
         
         // Add some effects
