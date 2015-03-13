@@ -7,6 +7,8 @@ Science out-reach game. You take control of the stomata (variable-width pores) o
 * Points trickle in for each open stomata if it is light.
 * Close/open stomata by clicking on them.
 * Pathogens rain down from the sky and try to attack the stomata.
+* Pathogens take a few seconds to successfully attack an open stomata but cannot successfully attack closed ones.
+* Each successful attack causes a loss in points.
 * Try to get as many points as possible in a minute!
 
 ## Extra Information
