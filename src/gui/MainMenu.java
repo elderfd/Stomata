@@ -24,7 +24,6 @@
 package gui;
 
 import gui.HighScoreManager.ScorePair;
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -167,7 +166,10 @@ public class MainMenu extends JPanel {
             nameLabel.setFont(fontToUse);
             nameLabel.setForeground(cambridgeBlue);
             
-            JLabel scoreLabel = new JLabel(String.valueOf(scorePair.score));
+            JLabel scoreLabel = new JLabel(String.format(
+                "%.2f",
+                scorePair.score
+            ));
             scoreLabel.setVerticalAlignment(SwingConstants.TOP);
             scoreLabel.setFont(fontToUse);
             scoreLabel.setForeground(cambridgeBlue);

@@ -56,7 +56,11 @@ public class Pathogen implements DrawableObject {
     }
 
     public String getSpriteID() {
-        return spriteID;
+        if(hasHitTarget()) {
+            return infectingSpriteID;
+        } else {
+            return normalSpriteID;
+        }
     }
 
     public Area getHitBox() {
@@ -156,7 +160,8 @@ public class Pathogen implements DrawableObject {
     private int width = 10;
     private int height = 10;
     
-    private String spriteID = "pathogen";
+    private String normalSpriteID = "pathogen";
+    private String infectingSpriteID = "infectingPathogen";
  
     private boolean _infected = false;
     
