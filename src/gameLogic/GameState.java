@@ -58,10 +58,14 @@ public class GameState {
         // Take into account height and width of stomata so they don't go off the edge
         Stoma testStoma = new Stoma(null);
         
+        int stomataAreaXBorderLeft = ARENA_NUM_COLS / 3;
+        int stomataAreaXBorderRight = stomataAreaXBorderLeft - ARENA_NUM_COLS / 6; 
+        int stomataAreaYBorder = ARENA_NUM_ROWS / 10;
+        
         stomataArea = new RectangularArea(
-                new Location(0, (int)(ARENA_NUM_ROWS / 2)),
-                ARENA_NUM_COLS - testStoma.getWidth(),
-                (int)(ARENA_NUM_ROWS / 2 - testStoma.getHeight())
+                new Location(stomataAreaXBorderLeft, (int)(ARENA_NUM_ROWS / 2)),
+                ARENA_NUM_COLS - testStoma.getWidth() - stomataAreaXBorderLeft - stomataAreaXBorderRight,
+                (int)(ARENA_NUM_ROWS / 2 - testStoma.getHeight()) - stomataAreaYBorder
         );
         
         // Pathogens can only spawn from top of screen

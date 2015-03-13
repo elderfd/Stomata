@@ -122,9 +122,33 @@ public class GamePanel extends JPanel {
         Location sunLocation = state.lightManager().getSunLocation(this);
         
         if(sunLocation != null) {
-            g2d.setColor(Color.yellow);
-            g2d.fillOval(sunLocation.getX() - 50, sunLocation.getY() - 50, 100, 100);
+            int sunWidth = coordTransform().gameWidthToScreenWidth(50);
+            int sunHeight = coordTransform().gameHeightToScreenHeight(50);
+            String sunSpriteID = "sun";
+
+            g2d.drawImage(
+                spriteManager.getSpriteImage(sunSpriteID),
+                sunLocation.getX() - sunWidth / 2,
+                sunLocation.getY() - sunHeight / 2,
+                sunWidth,
+                sunHeight,
+                this
+            );
         }
+        
+        // Draw the leaf
+        String leafSpriteID = "leaf";
+        int leafCornerY = coordTransform().gameHeightToScreenHeight(3 * state.getHeightOfArena() / 7);
+        int leafHeight = coordTransform().gameHeightToScreenHeight(state.getHeightOfArena()) - leafCornerY;
+        
+        g2d.drawImage(
+            spriteManager.getSpriteImage(leafSpriteID),
+            0,
+            leafCornerY,
+            coordTransform().gameWidthToScreenWidth(state.getWidthOfArena()),
+            leafHeight,
+            this
+        );
         
         // Then draw out all of the objects
         for(DrawableObject object : everythingToDraw) {
