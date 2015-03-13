@@ -85,7 +85,7 @@ public class GamePanel extends JPanel {
         int red = 0, green = 0, blue = 0;
         
         int brightestAlpha = 0;
-        int darkestAlpha = 200;
+        int darkestAlpha = 150;
         int alphaDiff = darkestAlpha - brightestAlpha;
         
         int alpha = (int) ((1 - brightnessFactor) * alphaDiff + brightestAlpha);

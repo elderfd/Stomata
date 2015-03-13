@@ -71,8 +71,8 @@ public class SpriteManager {
         addIDFileNamePair.accept("stomaClosed", "stomaClosed.png");
         addIDFileNamePair.accept("background", "background.jpg");
         addIDFileNamePair.accept("pathogen", "EvileSpore.png");
-        addIDFileNamePair.accept("dustCloud", "Clouds.png");
-        addIDFileNamePair.accept("pathogenInfection", "cloud.png");
+        addIDFileNamePair.accept("dustCloud", "whiteClouds.png");
+        addIDFileNamePair.accept("pathogenInfection", "frownyFace.png");
         addIDFileNamePair.accept("infectingPathogen", "infect_pathogen.png");
         addIDFileNamePair.accept("sun", "Sun.png");
         addIDFileNamePair.accept("leaf", "Leaf2.png");

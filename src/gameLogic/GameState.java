@@ -330,7 +330,7 @@ public class GameState {
     public boolean finished;
     
     public double _timeInHours = 0;
-    public RatePerFrame timeIncreaseRate = new RatePerSecond(2.5).toPerFrame();
+    public RatePerFrame timeIncreaseRate = new RatePerSecond(1).toPerFrame();
     
     private PointsManager _pointsManager;
     private ArrayList<VisualEffect> effects = new ArrayList<>();

@@ -90,6 +90,8 @@ public class MainMenu extends JPanel {
             Image image;
         }.loadImage();
         
+        titleLabel.setPreferredSize(new Dimension(1003, 408));
+        
         playButton = new JButton("Play");
         topScoresLabel = new JLabel("Top Scores");
         

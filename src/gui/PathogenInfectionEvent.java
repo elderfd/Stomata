@@ -64,7 +64,7 @@ public class PathogenInfectionEvent extends VisualEffect {
         return lifeRemaining.value() <= 0;
     }
     
-    private static int width = 10;
-    private static int height = 10;
+    private static int width = 15;
+    private static int height = 15;
     private TimeInFrames lifeRemaining = new TimeInSeconds(1).toTimeInFrames();
 }

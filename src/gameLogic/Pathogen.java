@@ -89,20 +89,11 @@ public class Pathogen implements DrawableObject {
         boolean dies = false;
         
         // Remove if off edge of screen
-        if(currentLocation.getX() < 0
-            || currentLocation.getX() > state.getWidthOfArena()
-            || currentLocation.getY() < 0
+        if(currentLocation.getY() < 0
             || currentLocation.getY() > state.getHeightOfArena()
         ) {
             dies = true;
-        } else {
-            // See if pathogen is decaying
-            if(hasLanded) {
-                double test = decayProbability.toPerFrame().value();
-
-                dies = rng.bernoulliTrial(decayProbability.toPerFrame().value());
-            }
-        }
+        } 
         
         return dies;
     }
@@ -227,7 +218,7 @@ public class Pathogen implements DrawableObject {
     protected Location currentLocation;
     
     // The amount of time it takes a pathogen to infect a stoma once it has reached it
-    static private TimeInSeconds timeToInfect = new TimeInSeconds(2.5);
+    static private TimeInSeconds timeToInfect = new TimeInSeconds(0.5);
     
     // How long since this pathogen started an attempted infection
     private TimeInSeconds timeSinceAttemptedInfectionStart = new TimeInSeconds(0);
