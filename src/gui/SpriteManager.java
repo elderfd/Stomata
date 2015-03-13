@@ -75,7 +75,7 @@ public class SpriteManager {
         addIDFileNamePair.accept("pathogenInfection", "cloud.png");
         addIDFileNamePair.accept("infectingPathogen", "infect_pathogen.png");
         addIDFileNamePair.accept("sun", "Sun.png");
-        addIDFileNamePair.accept("leaf", "Leaf.png");
+        addIDFileNamePair.accept("leaf", "Leaf2.png");
         
         String imageFolderName = "images/";
         
