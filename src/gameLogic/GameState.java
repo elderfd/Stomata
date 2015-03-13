@@ -29,7 +29,9 @@ import functionalInterfaces.TriConsumer;
 import gui.DrawableObject;
 import gui.PathogenDustCloud;
 import gui.PathogenInfectionEvent;
+import gui.SpriteManager;
 import gui.VisualEffect;
+import java.awt.image.BufferedImage;
 import static java.lang.Math.abs;
 import utility.Location;
 import utility.RNG;
@@ -39,6 +41,7 @@ import java.util.function.Predicate;
 import timeScaling.RatePerFrame;
 import timeScaling.RatePerSecond;
 import java.util.HashMap;
+import utility.Area;
 import utility.RectangularArea;
 
 /**
@@ -63,10 +66,10 @@ public class GameState {
         int stomataAreaYBorder = ARENA_NUM_ROWS / 10;
         
         stomataArea = new RectangularArea(
-                new Location(stomataAreaXBorderLeft, (int)(ARENA_NUM_ROWS / 2)),
-                ARENA_NUM_COLS - testStoma.getWidth() - stomataAreaXBorderLeft - stomataAreaXBorderRight,
-                (int)(ARENA_NUM_ROWS / 2 - testStoma.getHeight()) - stomataAreaYBorder
-        );
+            new Location(stomataAreaXBorderLeft, (int)(ARENA_NUM_ROWS / 2)),
+            ARENA_NUM_COLS - testStoma.getWidth() - stomataAreaXBorderLeft - stomataAreaXBorderRight,
+            (int)(ARENA_NUM_ROWS / 2 - testStoma.getHeight()) - stomataAreaYBorder
+        );      
         
         // Pathogens can only spawn from top of screen
         pathogenSpawnArea = new RectangularArea(
@@ -78,6 +81,33 @@ public class GameState {
         populateRandomStomata();
     }
         
+    public void attachSpriteManager(SpriteManager manager) {
+        _spriteManager = manager;
+    }
+    
+    public boolean isLocationOnLeaf(Location location) {
+        // TODO: This was added last minute - needs to be cleaned up
+        // Get the leaf image
+        BufferedImage leafImage = (BufferedImage)_spriteManager.getSpriteImage("leaf");
+        
+        // Map the location to a pixel on the image
+        int leafCornerY = 3 * ARENA_NUM_ROWS / 7;
+        int leafHeight = ARENA_NUM_ROWS - leafCornerY;
+        int leafWidth = ARENA_NUM_COLS;
+        
+        int pixelX = (int)(leafImage.getWidth(null) * (double)location.getX() / (double)leafWidth);
+        int pixelY = (int)((double)(location.getY() - leafCornerY) * leafImage.getHeight(null) / (double)leafHeight);
+        
+        // Return if the pixel is opaque or not
+        int alpha = 0;
+        
+        if(pixelX >= 0 && pixelY >=0 && pixelX < leafImage.getWidth() && pixelY < leafImage.getHeight()) {
+            alpha = (leafImage.getRGB(pixelX, pixelY) >> 24) & 0xff;
+        }
+        
+        return alpha > 0;
+    }
+    
     // This returns a list of everything to draw to rendering window
     public ArrayList<DrawableObject> getAllDrawableObjects() {
         ArrayList<DrawableObject> returnList = new ArrayList<>();
@@ -153,11 +183,11 @@ public class GameState {
         
         for(Pathogen pathogen : pathogens) {
             // Test for removal
-            if(pathogen.shouldDie(rng)) {
+            if(pathogen.shouldDie(rng, this)) {
                 indicesToRemove.add(counter);
                 addVisualEffect(new PathogenDustCloud(pathogen.getLocation()));
             } else {
-                pathogen.updateLocation(rng);
+                pathogen.updateLocation(rng, this);
             } 
             
             // Check for collision with target
@@ -294,7 +324,7 @@ public class GameState {
         return _lightMangager;
     }
     
-    final private RectangularArea stomataArea;
+    final private Area stomataArea;
     final private RectangularArea pathogenSpawnArea;
     
     public boolean finished;
@@ -306,4 +336,6 @@ public class GameState {
     private ArrayList<VisualEffect> effects = new ArrayList<>();
     
     private LightManager _lightMangager = new LightManager(this);
+    
+    SpriteManager _spriteManager;
 }

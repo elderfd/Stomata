@@ -56,6 +56,8 @@ public class MainWindow{
         renderPanel = new GamePanel(state, this);
         _mainMenu = new MainMenu(this);
         
+        state.attachSpriteManager(renderPanel.spriteManager());
+        
         windowPanel.add(_mainMenu, MAIN_MENU_IDENTIFIER);
         windowPanel.add(renderPanel, GAME_PANEL_IDENTIFIER);
         

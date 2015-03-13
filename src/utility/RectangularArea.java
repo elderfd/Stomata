@@ -101,6 +101,10 @@ public class RectangularArea implements Area {
         return _height;
     }
     
+    public int area() {
+        return _width * _height;
+    }
+    
     private Location upperLeft;
     private int _width;
     private int _height;

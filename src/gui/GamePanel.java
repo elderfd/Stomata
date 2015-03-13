@@ -41,7 +41,7 @@ import utility.RectangularArea;
  */
 public class GamePanel extends JPanel {
     public GamePanel(GameState state, MainWindow mainWindow) {
-        spriteManager = new SpriteManager();
+        _spriteManager = new SpriteManager();
         everythingToDraw = new ArrayList<>();
         inputListener = new UserInputListener(this, mainWindow);
         addMouseListener(inputListener);
@@ -110,7 +110,7 @@ public class GamePanel extends JPanel {
         g2d.clearRect(0, 0, getWidth(), getHeight());
         
         // Draw the background
-        g2d.drawImage(spriteManager.getSpriteImage("background"),
+        g2d.drawImage(_spriteManager.getSpriteImage("background"),
             0,
             0,
             this.getWidth(),
@@ -127,7 +127,7 @@ public class GamePanel extends JPanel {
             String sunSpriteID = "sun";
 
             g2d.drawImage(
-                spriteManager.getSpriteImage(sunSpriteID),
+                _spriteManager.getSpriteImage(sunSpriteID),
                 sunLocation.getX() - sunWidth / 2,
                 sunLocation.getY() - sunHeight / 2,
                 sunWidth,
@@ -142,7 +142,7 @@ public class GamePanel extends JPanel {
         int leafHeight = coordTransform().gameHeightToScreenHeight(state.getHeightOfArena()) - leafCornerY;
         
         g2d.drawImage(
-            spriteManager.getSpriteImage(leafSpriteID),
+            _spriteManager.getSpriteImage(leafSpriteID),
             0,
             leafCornerY,
             coordTransform().gameWidthToScreenWidth(state.getWidthOfArena()),
@@ -155,7 +155,7 @@ public class GamePanel extends JPanel {
             Location screenLocation = coordTransform().gameWorldToScreen(object.getLocation());
             
             g2d.drawImage(
-                spriteManager.getSpriteImage(object.getSpriteID()),
+                _spriteManager.getSpriteImage(object.getSpriteID()),
                 screenLocation.getX(),
                 screenLocation.getY(),
                 coordTransform().gameWidthToScreenWidth(object.getWidth()),
@@ -169,7 +169,7 @@ public class GamePanel extends JPanel {
             Location screenLocation = coordTransform().gameWorldToScreen(effect.getLocation());
             
             g2d.drawImage(
-                spriteManager.getSpriteImage(effect.getSpriteID()),
+                _spriteManager.getSpriteImage(effect.getSpriteID()),
                 screenLocation.getX(),
                 screenLocation.getY(),
                 coordTransform().gameWidthToScreenWidth(effect.getWidth()),
@@ -234,7 +234,11 @@ public class GamePanel extends JPanel {
         if(state.toggleAnyStomataAtLocation(clickLocation)) update();
     }
     
-    private SpriteManager spriteManager;
+    public SpriteManager spriteManager() {
+        return _spriteManager;
+    }
+    
+    private SpriteManager _spriteManager;
     private ArrayList<DrawableObject> everythingToDraw;
     private GameState state;
     private UserInputListener inputListener;

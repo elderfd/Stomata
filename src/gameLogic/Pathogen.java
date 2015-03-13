@@ -85,19 +85,29 @@ public class Pathogen implements DrawableObject {
         return targetStoma.getHitBox().overlapsWith((RectangularArea)this.getHitBox());
     }
     
-    public boolean shouldDie(RNG rng) {
+    public boolean shouldDie(RNG rng, GameState state) {
         boolean dies = false;
         
-        if(hasLanded) {
-            double test = decayProbability.toPerFrame().value();
-            
-            dies = rng.bernoulliTrial(decayProbability.toPerFrame().value());
+        // Remove if off edge of screen
+        if(currentLocation.getX() < 0
+            || currentLocation.getX() > state.getWidthOfArena()
+            || currentLocation.getY() < 0
+            || currentLocation.getY() > state.getHeightOfArena()
+        ) {
+            dies = true;
+        } else {
+            // See if pathogen is decaying
+            if(hasLanded) {
+                double test = decayProbability.toPerFrame().value();
+
+                dies = rng.bernoulliTrial(decayProbability.toPerFrame().value());
+            }
         }
         
         return dies;
     }
     
-    public void updateLocation(RNG rng) {
+    public void updateLocation(RNG rng, GameState state) {
         // Move pathogen closer to target
 
         // Check it hasn't already reached its target        
@@ -112,28 +122,31 @@ public class Pathogen implements DrawableObject {
             int xDiff = targetCentroid.getX() - currentCentroid.getX();
             int yDiff = targetCentroid.getY() - currentCentroid.getY();
             
+            // Check if on leaf
+            hasLanded = state.isLocationOnLeaf(currentLocation) && yDiff == 0;
+            
             int dist = speed;
-            if(dist > abs(yDiff)) {
+            
+            if(hasLanded) {
+                dist = 0;
+            }
+            
+            if(dist > abs(yDiff) && yDiff > 0) {
                 dist = abs(yDiff);
             }
             
-            if(yDiff >= 0) {
-                newY += dist;
-            } else if(yDiff < 0) {
-                newY -= dist;
-            }
+            newY += dist;
             
             dist = speed;
 
-            if(yDiff != 0) {
-                dist *= momentum.getEffect();
-            } else {
-                // Tracks sidewards to target (and starts decaying!)
-                hasLanded = true;
-                
+            // Check if on leaf
+            if(hasLanded) {
+                 // Tracks sidewards to target (and starts decaying!)                
                 if(xDiff < 0) {
                     dist *= -1;
                 }
+            } else {
+                dist *= momentum.getEffect();
             }
 
             newX += dist;

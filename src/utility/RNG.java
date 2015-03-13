@@ -23,9 +23,6 @@
  */
 package utility;
 
-import distributions.PoissonDistribution;
-import distributions.NormalDistribution;
-import distributions.BinomialDistribution;
 import java.util.Random;
 
 /**

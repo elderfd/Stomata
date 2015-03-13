@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
  *
  * @author James Elderfield
  */
-public class GraphicsTest {
+public class App {
 
     /**
      * @param args the command line arguments
