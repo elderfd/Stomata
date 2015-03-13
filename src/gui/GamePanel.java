@@ -122,8 +122,8 @@ public class GamePanel extends JPanel {
         Location sunLocation = state.lightManager().getSunLocation(this);
         
         if(sunLocation != null) {
-            int sunWidth = coordTransform().gameWidthToScreenWidth(50);
-            int sunHeight = coordTransform().gameHeightToScreenHeight(50);
+            int sunWidth = coordTransform().gameWidthToScreenWidth(100);
+            int sunHeight = coordTransform().gameHeightToScreenHeight(100);
             String sunSpriteID = "sun";
 
             g2d.drawImage(
