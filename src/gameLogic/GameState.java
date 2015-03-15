@@ -134,6 +134,7 @@ public class GameState {
     
     public void reset() {
         pathogens.clear();
+        effects.clear();
         populateRandomStomata();
         finished = false;
         _timeInHours = 0;
